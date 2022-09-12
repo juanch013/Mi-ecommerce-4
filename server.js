@@ -11,9 +11,10 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 const {logErrors,clientErrorHandler} = require('./api/middlewares/errorHandler');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3000; 
 
 app.use(express.json());
+//prueba
 
 // app.use('/login', usersRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
