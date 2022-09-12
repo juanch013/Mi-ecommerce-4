@@ -247,7 +247,9 @@ const getPicture = (req, res, next) => {
     
     const gallery = products.map((product) => product.gallery);
     const flattenGallery = gallery.flat(1);
-    const picture = flattenGallery.find((picture) => picture['picture-id'] === parseInt(id));
+    // Se quitan duplicados
+    const uniqueGallery = [...new Set(flattenGallery)];
+    const picture = uniqueGallery.find((picture) => picture['picture-id'] === parseInt(id));
 
     if (!picture) {
       return res.status(404).json({ error: 'Picture not found', message: '' });
