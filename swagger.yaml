@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  title: Mi ecommerce
+  version: 1.0.0
+  description: |-
+    Esta es la API de Mi ecommerce.
+    
+    Links:
+    - [Repositorio de Github](https://github.com/)
+  
+servers:
+  - url: http://localhost:3000/v1
+    description: Entorno Desarrollo
+    
+tags:
+  - name: usuarios
+    description: Todos los endpoints de usuarios
+  - name: productos
+    description: Todos los endpoints de productos
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  
+paths:
+  /users:
+    get:
+      tags: 
+        - usuarios
+      summary: Retorna listado de usuario.
+      responses:
+        '200':    # status code
+          description: Un array de usuarios
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+    post:
+      tags: 
+        - usuarios
+      summary: Crear un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msj:
+                    type: string
+  /users/{username}:
+    delete:
+      tags: 
+        - usuarios
+      summary: Elimina un usuario
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: Nombre de usuario
+      
+      responses: 
+        '200':
+          description: El usuario ha sido eliminado
+        '409':
+          description: El usuario no ha sido eliminado
+  /demo:
+    get:
+      tags: 
+        - usuarios
+      summary: Retorna listado de usuario.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':    # status code
+          description: Un array de usuarios
+        '401':    # status code
+          description: Usuario no autorizado  
+          
+  /login:
+    post:
+      tags: 
+        - usuarios
+      summary: Retorna un token para utilizar en el endpoint demo
+      responses:
+        '200':    # status code
+          description: Token válido
+        '401':    # status code
+          description: Usuario no autorizado
