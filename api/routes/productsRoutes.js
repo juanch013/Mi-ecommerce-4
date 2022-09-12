@@ -12,7 +12,7 @@ router.get('/:id',productsController.detalle);
 
 router.post('/',dataValidation ,productsController.crear);
 
-router.delete('/:id', )
+router.delete('/:id',productsController.eliminar);
 
 
 

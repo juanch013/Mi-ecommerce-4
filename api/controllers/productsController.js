@@ -78,6 +78,13 @@ const productsController = {
 
         //FALTA ELIMINAR SUS IMAGENES DEL ARCHIVO DE PICTURES.JSON Y ELIMINAR DE LOS CARRITOS
 
+        fileHelpers.guardarProducts(products ,res);
+
+        return res.status(200).json({
+            ok:true,
+            msg:`Producto eliminado correctamente`
+        })
+
     }
 }
 
