@@ -8,11 +8,16 @@ router.get('/',productsController.listar);
 
 router.get('/mostwanted',productsController.mostwanted);
 
+router.get('/search',productsController.busqueda);
+
 router.get('/:id',productsController.detalle);
 
 router.post('/',dataValidation ,productsController.crear);
 
 router.delete('/:id',productsController.eliminar);
+
+router.put('/:id',productsController.modificar);
+
 
 
 

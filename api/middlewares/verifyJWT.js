@@ -16,7 +16,7 @@ const verifyJWT = (req, res, next) => {
 		const decoded = jwt.verify(token, SECRETORPRIVATEKEY);
 
 		req.newUsers = decoded;
-
+		
 		next();
 	} catch (error) {
     console.log(error);
