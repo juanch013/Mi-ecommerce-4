@@ -19,14 +19,9 @@
     "description": "Introduction of Other Antineoplastic into POC, Endo",
     "gallery": [
       {
-        "picture-id": 2,
+        "picture-id": 1,
         "picture-url": "http://dummyimage.com/131x100.png/dddddd/000000"
-      },
-      {
-        "picture-id": 3,
-        "picture-url": "http://dummyimage.com/131x100.png/dddddd/000001"
       }
-      
     ],
     "category": "",
     "mostwanted": true,
@@ -38,7 +33,7 @@
     "description": "Supplement Rectum with Nonaut Sub, Via Opening",
     "gallery": [
       {
-        "picture-id": 40,
+        "picture-id": 1,
         "picture-url": "http://dummyimage.com/232x100.png/cc0000/ffffff"
       }
     ],
@@ -52,7 +47,7 @@
     "description": "Reposition Left Internal Mammary Artery, Perc Endo Approach",
     "gallery": [
       {
-        "picture-id": 5,
+        "picture-id": 1,
         "picture-url": "http://dummyimage.com/172x100.png/cc0000/ffffff"
       }
     ],
@@ -66,11 +61,11 @@
     "description": "Division of Right Shoulder Muscle, Perc Endo Approach",
     "gallery": [
       {
-        "picture-id": 6,
+        "picture-id": 1,
         "picture-url": "http://dummyimage.com/132x100.png/cc0000/ffffff"
       },
       {
-        "picture-id": 7,
+        "picture-id": 2,
         "picture-url": "http://dummyimage.com/139x100.png/5fa2dd/ffffff"
       }
     ],
@@ -84,11 +79,11 @@
     "description": "Excision of Right Tunica Vaginalis, Percutaneous Approach",
     "gallery": [
       {
-        "picture-id": 8,
+        "picture-id": 1,
         "picture-url": "http://dummyimage.com/107x100.png/5fa2dd/ffffff"
       },
       {
-        "picture-id": 55,
+        "picture-id": 2,
         "picture-url": "http://dummyimage.com/185x100.png/cc0000/ffffff"
       }
     ],
@@ -102,15 +97,15 @@
     "description": "Excision of Right Pulmonary Artery, Open Approach",
     "gallery": [
       {
-        "picture-id": 10,
+        "picture-id": 1,
         "picture-url": "http://dummyimage.com/194x100.png/dddddd/000000"
       },
       {
-        "picture-id": 11,
+        "picture-id": 2,
         "picture-url": "http://dummyimage.com/220x100.png/ff4444/ffffff"
       },
       {
-        "picture-id": 12,
+        "picture-id": 3,
         "picture-url": "http://dummyimage.com/241x100.png/dddddd/000000"
       }
     ],
@@ -124,15 +119,15 @@
     "description": "Reposition Left Radius with Int Fix, Perc Endo Approach",
     "gallery": [
       {
-        "picture-id": 13,
+        "picture-id": 1,
         "picture-url": "http://dummyimage.com/231x100.png/dddddd/000000"
       },
       {
-        "picture-id": 14,
+        "picture-id": 2,
         "picture-url": "http://dummyimage.com/159x100.png/5fa2dd/ffffff"
       },
       {
-        "picture-id": 15,
+        "picture-id": 3,
         "picture-url": "http://dummyimage.com/105x100.png/dddddd/000000"
       }
     ],
@@ -146,15 +141,15 @@
     "description": "Dilate L Renal Art w 4+ Intralum Dev, Perc Endo",
     "gallery": [
       {
-        "picture-id": 16,
+        "picture-id": 1,
         "picture-url": "http://dummyimage.com/176x100.png/cc0000/ffffff"
       },
       {
-        "picture-id": 17,
+        "picture-id": 2,
         "picture-url": "http://dummyimage.com/211x100.png/dddddd/000000"
       },
       {
-        "picture-id": 18,
+        "picture-id": 3,
         "picture-url": "http://dummyimage.com/135x100.png/dddddd/000000"
       }
     ],
@@ -168,7 +163,7 @@
     "description": "Drainage of Left Posterior Tibial Artery, Open Approach",
     "gallery": [
       {
-        "picture-id": 19,
+        "picture-id": 1,
         "picture-url": "http://dummyimage.com/236x100.png/5fa2dd/ffffff"
       }
     ],
