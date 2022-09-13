@@ -1,118 +1,5 @@
 const fs = require('fs');
 
-// let pictures = [
-//   {
-//     "id": 1,
-//     "url": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-//     "description": "Google Logo",
-//     "product_id": 1
-//   },
-//   {
-//     "id": 2,
-//     "url": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-//     "description": "Google Logo",
-//     "product_id": 4
-//   },
-//   {
-//     "id": 3,
-//     "url": "http://dummyimage.com/231x100.png/dddddd/000000",
-//     "description": "Google Logo",
-//     "product_id": 7
-//   },
-//   {
-//     "id": 4,
-//     "url": "http://dummyimage.com/159x100.png/5fa2dd/ffffff",
-//     "description": "Sin descripcion",
-//     "product_id": 2
-//   },
-//   {
-//     "id": 5,
-//     "url": "http://dummyimage.com/105x100.png/dddddd/000000",
-//     "description": "Sin descripcion",
-//     "product_id": 5
-//   },
-//   {
-//     "id": 6,
-//     "url": "http://dummyimage.com/236x100.png/5fa2dd/ffffff",
-//     "description": "Sin descripcion",
-//     "product_id": 8
-//   },
-//   {
-//     "id": 7,
-//     "url": "http://dummyimage.com/194x100.png/dddddd/000000",
-//     "description": "Sin descripcion",
-//     "product_id": 5
-//   },
-//   {
-//     "id": 8,
-//     "url": "http://dummyimage.com/220x100.png/ff4444/ffffff",
-//     "description": "Sin descripcion",
-//     "product_id": 8
-//   },
-//   {
-//     "id": 9,
-//     "url": "http://dummyimage.com/241x100.png/dddddd/000000",
-//     "description": "Sin descripcion",
-//     "product_id": 1
-//   },
-//   {
-//     "id": 10,
-//     "url": "http://dummyimage.com/158x100.png/ff4444/ffffff",
-//     "description": "Sin descripcion",
-//     "product_id": 3
-//   },
-//   {
-//     "id": 11,
-//     "url": "http://dummyimage.com/158x100.png/ff4444/ffffff",
-//     "description": "Sin descripcion",
-//     "product_id": 6
-//   },
-// ]
-
-// let products = [
-// 	{
-// 		"id": 1,
-// 		"title": "Producto 1",
-// 		"price": "$739.14",
-// 		"description": "Extirpation of Matter from Lower Esophagus, Via Opening",
-// 		"gallery": [
-// 			{
-// 				"picture-id": 1,
-// 			}
-// 		],
-// 		"category": "",
-// 		"mostwanted": true,
-// 		"stock": 1
-// 	},
-// 	{
-// 		"id": 2,
-// 		"title": "Producto 2",
-// 		"price": "$775.90",
-// 		"description": "Introduction of Other Antineoplastic into POC, Endo",
-// 		"gallery": [
-// 			{
-// 				"picture-id": 19,
-// 			}
-// 		],
-// 		"category": "",
-// 		"mostwanted": true,
-// 		"stock": 2
-// 	},
-// 	{
-// 		"id": 3,
-// 		"title": "Producto 3",
-// 		"price": "$420.32",
-// 		"description": "Supplement Rectum with Nonaut Sub, Via Opening",
-// 		"gallery": [
-// 			{
-// 				"picture-id": 6,
-// 			}
-// 		],
-// 		"category": "",
-// 		"mostwanted": true,
-// 		"stock": 3
-// 	}
-// ]
 
 const getPictures = (req, res, next) => {
 	// /pictures?product=id
@@ -141,8 +28,6 @@ const getPictures = (req, res, next) => {
 			(picture) => picture.product_id === parseInt(productId)
 		);
 
-    console.log(picturesProduct)
-
 		if (!picturesProduct.length) {
 			return res
 				.status(404)
@@ -156,7 +41,39 @@ const getPictures = (req, res, next) => {
 };
 
 const getPicture = (req, res, next) => {
-	//POR AHORA NO HACE NADA
+	// GET /pictures/:id
+	// Acción: Recupera la picture con el id solicitado. Responde con la información completa de la picture con el id buscado.
+	try {
+		const pictureId = req.params.id;
+
+		if (!pictureId) {
+			return res.status(400).json({ error: 'Id is required', message: '' });
+		}
+
+		if (isNaN(pictureId)) {
+			return res
+				.status(400)
+				.json({ error: 'Id must be a number', message: '' });
+		}
+
+		const dbPictures = fs.readFileSync(
+			__dirname + '/../data/pictures.json',
+			'utf-8'
+		);
+		const pictures = JSON.parse(dbPictures);
+
+		const picture = pictures?.find(
+			(picture) => picture.id === parseInt(pictureId)
+		);
+
+		if (!picture) {
+			return res.status(404).json({ error: 'Picture not found', message: '' });
+		}
+
+		res.status(200).json(picture);
+	} catch (error) {
+		next(error);
+	}
 };
 
 const createPicture = (req, res, next) => {
@@ -220,8 +137,100 @@ const createPicture = (req, res, next) => {
 	}
 };
 
-module.exports = { getPictures, getPicture, createPicture };
+const updatePicture = (req, res, next) => {
+	// PUT /pictures/:id
+	//   Acción: Actualiza la picture identificada con id. Debe recibir un body con la info de la picture a modificar.
+	// Responde con la info completa de la picture modificada.
+	try {
+		const { pictureUrl, pictureDescription } = req.body;
+		const pictureId = req.params.id;
 
+		if (!pictureUrl || !pictureDescription || !pictureId) {
+			return res.status(400).json({ error: 'Missing data', message: '' });
+		}
+
+		if (isNaN(pictureId)) {
+			return res
+				.status(400)
+				.json({ error: 'Id must be a number', message: '' });
+		}
+
+		const dbPictures = fs.readFileSync(
+			__dirname + '/../data/pictures.json',
+			'utf-8'
+		);
+		const pictures = JSON.parse(dbPictures);
+
+		const picture = pictures.find(
+			(picture) => picture.id === parseInt(pictureId)
+		);
+
+		if (!picture) {
+			return res.status(404).json({ error: 'Picture not found', message: '' });
+		}
+
+		picture.url = pictureUrl;
+		picture.description = pictureDescription;
+
+		fs.writeFileSync(
+			__dirname + '/../data/pictures.json',
+			JSON.stringify(pictures)
+		);
+
+		res.status(200).json(picture);
+	} catch (error) {
+		next(error);
+	}
+};
+
+const deletePicture = (req, res, next) => {
+  // DELETE /pictures/:id
+  // Acción: Eliminar la picture identificada con id. Responde con información sobre la eliminación realizada.
+  try {
+    const pictureId = req.params.id;
+
+    if (!pictureId) {
+      return res.status(400).json({ error: 'Id is required', message: '' });
+    }
+
+    if (isNaN(pictureId)) {
+      return res
+        .status(400)
+        .json({ error: 'Id must be a number', message: '' });
+    }
+
+    const dbPictures = fs.readFileSync(
+      __dirname + '/../data/pictures.json',
+      'utf-8'
+    );
+    const pictures = JSON.parse(dbPictures);
+
+    const picture = pictures.find(
+      (picture) => picture.id === parseInt(pictureId)
+    );
+
+    if (!picture) {
+      return res.status(404).json({ error: 'Picture not found', message: '' });
+    }
+
+    const index = pictures.indexOf(picture);
+    pictures.splice(index, 1);  
+
+    fs.writeFileSync(
+      __dirname + '/../data/pictures.json',
+      JSON.stringify(pictures)
+    );
+
+    res.status(200).json({ message: 'Picture deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+module.exports = { getPictures, getPicture, createPicture, updatePicture, deletePicture };
+
+/// ######################################################################## FUNCIONES ANTERIORES
 //viejas
 // const getPicture = (req, res, next) => {
 // 	try {
