@@ -108,12 +108,3 @@ module.exports = {
 
 
 
-// const getPicturesFromFile = (res, next) => {
-  // 	try {
-  // 		let picturesToParse = fs.readFileSync('./api/data/pictures.json');
-  // 		return JSON.parse(picturesToParse);
-  // 	} catch (error) {
-  //     next(error);
-  // 	}
-  // };
-  

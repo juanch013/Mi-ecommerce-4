@@ -9,14 +9,14 @@ info:
     - [Repositorio de Github](https://github.com/)
   
 servers:
-  - url: http://localhost:3000/v1
+  - url: http://localhost:3000/api/v1
     description: Entorno Desarrollo
     
 tags:
   - name: usuarios
     description: Todos los endpoints de usuarios
-  - name: productos
-    description: Todos los endpoints de productos
+  - name: products
+    description: Todos los endpoints de products
 
 components:
   securitySchemes:

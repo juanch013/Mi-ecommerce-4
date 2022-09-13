@@ -8,10 +8,10 @@ function dataValidation(req, res, next){
         })
     }
 
-    if(title == "" || price == 0 || gallery.length == 0){
+    if(title == "" || price == 0 || gallery.length == 0 || typeof(price) != "Number"){
         return res.status(400).json({
             ok:false,
-            msg:"los atributos precio titulo y galeria son obligatorios"
+            msg:"Los parametros de entrada no son correctos"
         })
     }
 
