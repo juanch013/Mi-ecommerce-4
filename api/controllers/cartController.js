@@ -38,9 +38,7 @@ const cartList = (req,res) => {
 const cartEdit = (req,res,next) => {
     const id = req.params.id;
     const cartUpdate = req.body;
-    console.log(cartUpdate.length);
     if(cartUpdate.length > 0){
-   
     //if(req.newUser.id == id || req.newUser.role == 'god'){
         try {
             const users = filesHandler.getUsers(res);
