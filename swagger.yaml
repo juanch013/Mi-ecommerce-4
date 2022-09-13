@@ -113,10 +113,21 @@ paths:
       - products
     summary: Retorna la lista de productos del sistema
     responses:
-      '200':
-        description: Litsado de productos
       '500':
         description: Internal error
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  msg:
+                    type: string
+                    example: Server Error
+      '200':
+        description: Litsado de productos
         content:
           application/json:
             schema:
@@ -142,7 +153,16 @@ paths:
                         gallery:
                           type: array
                           items:
-                            type: number
+                            type: object
+                            properties:
+                              id:
+                                type: number
+                              url:
+                                type: string
+                              descripcion:
+                                type: string
+                              product_id:
+                                type: number
                         category:
                           type: string
                         mostwanted: 
@@ -167,10 +187,6 @@ paths:
                 type: number
               description:
                 type: string
-              gallery:
-                type: array
-                items:
-                  type: number
               category:
                 type: string
               mostwanted: 
@@ -179,12 +195,34 @@ paths:
                 type: number
 
     responses:
-      '200':
-        description: Litsado de productos
       '401':
         description: Bad request
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  msg:
+                    type: string
+                    example: Los parametros de entrada no eran correctos
       '500':
         description: Internal error
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  msg:
+                    type: string
+                    example: Server Error
+      '200':
+        description: Litsado de productos
         content:
           application/json:
             schema:
@@ -208,10 +246,155 @@ paths:
                     gallery:
                       type: array
                       items:
-                        type: number
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          url:
+                            type: string
+                          descripcion:
+                            type: string
+                          product_id:
+                            type: number
                     category:
                       type: string
                     mostwanted: 
                       type: boolean
                     stock:
                       type: number
+
+  /products/:id:
+    get:
+      tags:
+        - products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id de producto
+          schema:
+            type: string
+      responses:
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  msg:
+                    type: string
+                    example: Server Error
+        '404':  
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  msg:
+                    type: string
+                    example: Producto no encontrado
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  title:
+                    type: string
+                  price:
+                    type: number
+                  description:
+                    type: string
+                  gallery:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        url:
+                          type: string
+                        descripcion:
+                          type: string
+                        product_id:
+                          type: number
+                  category:
+                    type: string
+                  mostwanted: 
+                    type: boolean
+                  stock:
+                    type: number
+  
+  /products/mostwanted:
+    get:
+      tags:
+        - products
+      responses:
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  msg:
+                    type: string
+                    example: Server Error
+              
+        '200':
+          description: Listado de productos 'mostwanted'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          title:
+                            type: string
+                          price:
+                            type: number
+                          description:
+                            type: string
+                          gallery:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                url:
+                                  type: string
+                                descripcion:
+                                  type: string
+                                product_id:
+                                  type: number
+                          category:
+                            type: string
+                          mostwanted: 
+                            type: boolean
+                          stock:
+                            type: number
