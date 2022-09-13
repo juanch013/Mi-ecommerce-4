@@ -14,7 +14,7 @@ const getProducts = (next) => {
 
 const getUsers = (next) => {
 	try {
-		let usersToParse = fs.readFileSync('./api/data/users.json');
+		let usersToParse = fs.readFileSync('./api/data/user.json');
 		return JSON.parse(usersToParse);
 	} catch (error) {
     next(error);
@@ -55,7 +55,7 @@ const guardarPictures = (arr,next)=>{
 
 const guardarUsers = (arr,next) => {
   try {
-		fs.writeFileSync('./api/data/users.json', JSON.stringify(arr));
+		fs.writeFileSync('./api/data/user.json', JSON.stringify(arr));
 	} catch (error) {
     next(error);
 	}
