@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 //retorna un array de objetos literales con los productos del sistema
-const getProducts = (res, next) => {
+const getProducts = (next) => {
 	try {
 		let productsToParse = fs.readFileSync('./api/data/products.json');
 		return JSON.parse(productsToParse);
@@ -12,9 +12,9 @@ const getProducts = (res, next) => {
 
 //retorna un array de objetos literales con los usuarios del sistema
 
-const getUsers = (res, next) => {
+const getUsers = (next) => {
 	try {
-		let usersToParse = fs.readFileSync('./api/data/users.json');
+		let usersToParse = fs.readFileSync('./api/data/user.json');
 		return JSON.parse(usersToParse);
 	} catch (error) {
     next(error);
@@ -22,7 +22,7 @@ const getUsers = (res, next) => {
 };
 
 //retorna un array de objetos literales con las imagenes del sistema
-const getImages = (res, next)=>{
+const getImages = (next)=>{
   try {
       let picturesToParse = fs.readFileSync('./api/data/pictures.json','utf-8');
       return JSON.parse(picturesToParse);
@@ -40,7 +40,7 @@ const getPicturesFromProduct = (id,res)=>{
 
 //recibe un array de objetos literales con todos las imagenes del sistema, los transforma a un
 //string en formato json y los guarda en el archivo pictures.json
-const guardarPictures = (arr,res, next)=>{
+const guardarPictures = (arr,next)=>{
   try {
     fs.writeFileSync('./api/data/pictures.json',JSON.stringify(arr));
   } catch (error) {
@@ -52,9 +52,9 @@ const guardarPictures = (arr,res, next)=>{
 //recibe un array de objetos literales con todos los usuarios del sistema, los transforma a un
 //string en formato json y los guarda en el archivo users.json
 
-const guardarUsers = (arr, res, next) => {
+const guardarUsers = (arr, next) => {
   try {
-		fs.writeFileSync('./api/data/users.json', JSON.stringify(arr));
+		fs.writeFileSync('./api/data/user.json', JSON.stringify(arr));
 	} catch (error) {
     next(error);
 	}
@@ -63,7 +63,7 @@ const guardarUsers = (arr, res, next) => {
 
 //recibe un array de objetos literales con todos los productos del sistema, los transforma a un
 //string en formato json y los guarda en el archivo products.json
-const guardarProducts = (arr, res, next) => {
+const guardarProducts = (arr, next) => {
 	try {
 		fs.writeFileSync('./api/data/products.json', JSON.stringify(arr));
 	} catch (error) {
@@ -83,7 +83,7 @@ const ordenarProductos = (arr) => {
 
 //recibe un id del producto del cual queremos eliminar las imagenes,
 //filtra las imagenes del sistema eliminando las imagenes con el product-id pasado por param
-const eliminarPicturesDeProduct = (id,res, next) => {
+const eliminarPicturesDeProduct = (id,next) => {
   try {
       let pictures = getImages(res);
       pictures = pictures.filter((p)=>{return p.product_id != id})

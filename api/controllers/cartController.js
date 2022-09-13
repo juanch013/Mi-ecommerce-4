@@ -1,12 +1,9 @@
 const filesHandler = require('../../helpers/filesHelpers');
-
-//req.newuser
-
 const cartList = (req,res, next) => {
     const id = req.params.id;
     //if(req.newUser.id == id || req.newUser.role == 'god' || req.newUser.role == 'admin'){
         try {
-            const users = filesHandler.getUsers(res, next);
+            const users = filesHandler.getUsers(next);
             const user = users.find(el => el.id === Number(id));
             if(!user){
                 res.status(404).json({
@@ -43,7 +40,7 @@ const cartEdit = (req,res,next) => {
    
     //if(req.newUser.id == id || req.newUser.role == 'god'){
         try {
-            const users = filesHandler.getUsers(res, next);
+            const users = filesHandler.getUsers(next);
             const user = users.find(el => el.id === Number(id));            
             if(!user){
                 res.status(404).json({
@@ -53,17 +50,22 @@ const cartEdit = (req,res,next) => {
             
             const cart = user.cart;
             cartUpdate.forEach(element => {
-            const aux = cart.find(el => el.id == element.id);
-            if(!aux){
-                cart.push(element);
-            }else{
-                aux.quantity += element.quantity;
-            }
-            });
-            res.status(200).json({
-                msg: 'Carrito actualizado:',
-                cart
-            })
+                if(!element.id || !element.quantity){
+                    res.status(500).json({
+                        msg: 'Cada producto debe tener id y quantity.'
+                    })
+                }
+                const aux = cart.find(el => el.id == element.id);
+                if(!aux){
+                    cart.push(element);
+                }else{
+                    aux.quantity += element.quantity;
+                }
+                });
+                res.status(200).json({
+                    msg: 'Carrito actualizado:',
+                    cart
+                })
             filesHandler.guardarUsers(users,res);
             
         } catch (error) {
