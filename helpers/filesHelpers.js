@@ -34,8 +34,7 @@ const getImages = (next)=>{
 //recibe por parametro el id del producto y recibe todas las pictures ue tiene asiganda este producto
 const getPicturesFromProduct = (id,next)=>{
   let pictures = getImages(next);
-  let picturesProduct = pictures.filter(p => p.productId == id)
-  console.log(picturesProduct);
+  let picturesProduct = pictures.filter(p => p.productId == id);
   return picturesProduct;
 }
 
