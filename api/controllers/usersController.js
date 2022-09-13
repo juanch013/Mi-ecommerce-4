@@ -1,7 +1,7 @@
 const fileHelpers = require('../../helpers/filesHelpers');
 
 const validateUserFilds = (userObject) => {
-    {email, username, password, firstname, lastname, profilepic} = userObject;
+    const {email, username, password, firstname, lastname, profilepic} = userObject;
 
     if(typeof email     === 'string' && 
        typeof username  === 'string' && 
@@ -25,11 +25,16 @@ const usersController = {
     getUser: function(req, res) {
         const users = fileHelpers.getUsers();
         const userId = req.params.id;
+
+        if(typeof userId !== 'number')
+        {
+            return res.stauts(400).json({"msg": "Bad request"})
+        }
         const userIndex = userId - 1;
 
         if(!(userIndex < users.length))
         {
-            return res.stauts(404).json({"msg": "Bad request: User does not exists."})
+            return res.stauts(404).json({"msg": "User does not exists."})
         }
         if(users[userIndex].id !== userId)
         {
@@ -40,20 +45,18 @@ const usersController = {
     },
 
     createUser: function(req, res) {
-        const users = fileHelpers.getUsers();
         const userFromRequest = req.body;
-        if(validateUser(userFromRequest)
+        if(!validateUser(userFromRequest))
         {
-            const idToAdd = users.length;
-            const userToAdd = {idToAdd, ...userFromRequest};
-            users.push(userToAdd);
-            res.status(201).json(userToAdd);
-            fileHelpers.guardarUsers(users, res);
-
-        }else
-        {
-            res.status(400).
+            return res.status(400).json({"msg": "Bad request"})
         }
+        
+        let users = fileHelpers.getUsers();
+        const idToAdd = users.length;
+        const userToAdd = {idToAdd, ...userFromRequest};
+        users.push(userToAdd);
+        fileHelpers.guardarUsers(users, res);
+        return res.status(201).json(userToAdd);
     },
 
     // login: function(req, res) {
@@ -61,7 +64,28 @@ const usersController = {
     // },
 
     updateUser: function(req, res) {
+        let users = fileHelpers.getUsers();
+        const userId = req.params.id;
+        const userFromRequest = req.body;
         
+        if(!validateUser(userFromRequest))
+        {
+            return res.status(400).json({"msg": "Bad request"});
+        }
+        if(typeof userId !== 'number')
+        {
+            return res.stauts(400).json({"msg": "Bad request"});
+        }
+        
+        const userIndex = userId - 1;
+        if(!(userIndex < users.length))
+        {
+            return res.stauts(404).json({"msg": "Bad request: User does not exists."});
+        }
+        const userToEdit = req.body;
+        users[userIndex] = userToEdit;
+        fileHelpers.guardarUsers(users, res);
+        return res.status(200).json(users[userIndex]);
     },
 
     deleteUser: function(req, res) {
