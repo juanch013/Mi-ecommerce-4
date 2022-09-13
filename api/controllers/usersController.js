@@ -93,15 +93,17 @@ const usersController = {
     },
 }
 
+module.exports = usersController
 
-router.get('/', usersControlle.listUsers);
 
-router.get('/:id', usersControlle.getUser);
+// router.get('/', usersControlle.listUsers);
 
-router.post('/', usersControlle.createUser);
+// router.get('/:id', usersControlle.getUser);
 
-//router.post('/login', usersControlle.login);
+// router.post('/', usersControlle.createUser);
 
-router.put('/:id', usersControlle.updateUser);
+// //router.post('/login', usersControlle.login);
 
-router.delete('/:id', usersControlle.deleteUser);
+// router.put('/:id', usersControlle.updateUser);
+
+// router.delete('/:id', usersControlle.deleteUser);

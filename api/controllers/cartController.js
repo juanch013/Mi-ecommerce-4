@@ -2,11 +2,11 @@ const filesHandler = require('../../helpers/filesHelpers');
 
 //req.newuser
 
-const cartList = (req,res) => {
+const cartList = (req,res, next) => {
     const id = req.params.id;
     //if(req.newUser.id == id || req.newUser.role == 'god' || req.newUser.role == 'admin'){
         try {
-            const users = filesHandler.getUsers(res);
+            const users = filesHandler.getUsers(res, next);
             const user = users.find(el => el.id === Number(id));
             if(!user){
                 res.status(404).json({
@@ -43,7 +43,7 @@ const cartEdit = (req,res,next) => {
    
     //if(req.newUser.id == id || req.newUser.role == 'god'){
         try {
-            const users = filesHandler.getUsers(res);
+            const users = filesHandler.getUsers(res, next);
             const user = users.find(el => el.id === Number(id));            
             if(!user){
                 res.status(404).json({
