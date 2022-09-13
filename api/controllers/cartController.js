@@ -1,7 +1,7 @@
 const filesHandler = require('../../helpers/filesHelpers');
 const cartList = (req,res, next) => {
     const id = req.params.id;
-    //if(req.newUser.id == id || req.newUser.role == 'god' || req.newUser.role == 'admin'){
+    if(req.newUser.id == id || req.newUser.role == 'god' || req.newUser.role == 'admin'){
         try {
             const users = filesHandler.getUsers(next);
             const user = users.find(el => el.id === Number(id));
@@ -24,11 +24,11 @@ const cartList = (req,res, next) => {
         } catch (error) {
             console.log(error);
         }
-    // }else{
-    //     res.status(500).json({
-    //         msg: 'No tienes los permisos para efectuar esta accion'
-    //     })
-    // }
+    }else{
+        res.status(500).json({
+            msg: 'No tienes los permisos para efectuar esta accion'
+        })
+    }
 
 }
 
@@ -38,7 +38,7 @@ const cartEdit = (req,res,next) => {
     console.log(cartUpdate.length);
     if(cartUpdate.length > 0){
    
-    //if(req.newUser.id == id || req.newUser.role == 'god'){
+    if(req.newUser.id == id || req.newUser.role == 'god'){
         try {
             const users = filesHandler.getUsers(next);
             const user = users.find(el => el.id === Number(id));            
@@ -71,12 +71,12 @@ const cartEdit = (req,res,next) => {
         } catch (error) {
             next();
         }
-    // }else{
-    //     res.status(500).json({
-    //         msg: 'No tienes los permisos para efectuar esta accion'
-    //     })
-    //} 
-     }else{
+    }else{
+        res.status(500).json({
+            msg: 'No tienes los permisos para efectuar esta accion'
+        })
+        } 
+    }else{
         res.status(500).json({
             msg: 'Debe ingresar al menos un producto'
         })
