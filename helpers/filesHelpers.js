@@ -17,7 +17,7 @@ const getProducts = (res)=>{
 //retorna un array de objetos literales con los usuarios del sistema
 const getUsers = (res)=>{
     try {
-        let usersToParse = fs.readFileSync('./api/data/users.json');
+        let usersToParse = fs.readFileSync('./api/data/user.json');
         return JSON.parse(usersToParse);
     } catch (error) {
         console.log(error);
@@ -33,7 +33,7 @@ const getUsers = (res)=>{
 //string en formato json y los guarda en el archivo users.json
 const guardarUsers = (arr, res)=>{
     try {
-        fs.writeFileSync('./api/data/users.json',JSON.stringify(arr));
+        fs.writeFileSync('./api/data/user.json',JSON.stringify(arr));
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -66,4 +66,65 @@ const ordenarProductos= (arr)=>{
     return arr;
 }
 
-module.exports = {getProducts,getUsers,guardarProducts,guardarUsers,ordenarProductos};
+//retorna un array de objetos literales con las imagenes del sistema
+const getImages = (res)=>{
+    try {
+        let picturesToParse = fs.readFileSync('./api/data/pictures.json','utf-8');
+        return JSON.parse(picturesToParse);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok:false,
+            msg: 'Internal error'
+        })
+    }
+}
+
+//recibe un array de objetos literales con todos las imagenes del sistema, los transforma a un
+//string en formato json y los guarda en el archivo pictures.json
+const guardarPictures = (arr,res)=>{
+    try {
+        fs.writeFileSync('./api/data/pictures.json',JSON.stringify(arr));
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok:false,
+            msg:"Server Error"
+        })
+    }
+}
+
+//recibe un id del producto del cual queremos eliminar las imagenes, 
+//filtra las imagenes del sistema eliminando las imagenes con el product-id pasado por param 
+const eliminarPicturesDeProduct = (id,res) => {
+    try {
+        let pictures = getImages(res);
+        pictures = pictures.filter((p)=>{return p.product_id != id})
+        guardarPictures(pictures);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok:false,
+            msg:'Server error'
+        })
+    }
+}
+
+//recibe por parametro el id del producto y recibe todas las pictures ue tiene asiganda este producto
+const getPicturesFromProduct = (id,res)=>{
+    let pictures = getImages(res);
+    let picturesProduct = pictures.filter(p => p.product_id == id)
+    return picturesProduct;
+}
+
+module.exports = {
+    getProducts,
+    getUsers,
+    guardarProducts,
+    guardarUsers,
+    ordenarProductos,
+    getImages,
+    guardarProducts,
+    eliminarPicturesDeProduct, 
+    guardarPictures,
+    getPicturesFromProduct};

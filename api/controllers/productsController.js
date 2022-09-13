@@ -3,6 +3,11 @@ const fileHelpers = require('../../helpers/filesHelpers');
 const productsController = {
     listar: (req, res, next)=>{
         let products = fileHelpers.getProducts(res);
+
+        for(prod of products){
+            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res);
+        }
+
         return res.status(200).json({
                     productos: products
                 })
@@ -14,6 +19,7 @@ const productsController = {
 
         for(prod of products){
             if(prod.id == id){
+                prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res);
                 return res.status(200).json({
                     ok: true,
                     msg: "ok",
@@ -33,6 +39,10 @@ const productsController = {
         let filteredProducts = products.filter((prod)=>{
             return prod.mostwanted == true;
         })
+
+        for(prod of filteredProducts){
+            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res);
+        }
 
         return res.status(200).json({
                     filteredProducts
@@ -61,7 +71,7 @@ const productsController = {
             price: price,
             title: title,
             description : description == undefined? "" : description,
-            gallery: gallery,
+            gallery: [],
             stock: stock == undefined? 0 : stock,
             mostwanted : mostwanted == undefined? false : mostwanted,
             category : category
@@ -107,10 +117,13 @@ const productsController = {
         }
 
 
+        
+        //elimina las imagenes del product que se va a eliminar
+        fileHelpers.eliminarPicturesDeProduct(id,res);
+        
+
+        //filtra os productos y guarda el array que no contiene el producto con producto.id == 'id'
         products = products.filter((prod)=>{return prod.id != id});
-
-        //FALTA ELIMINAR SUS IMAGENES DEL ARCHIVO DE PICTURES.JSON Y ELIMINAR DE LOS CARRITOS
-
         fileHelpers.guardarProducts(products ,res);
 
         return res.status(200).json({
@@ -140,6 +153,10 @@ const productsController = {
                 productsFiltrados.push(element);
             }
         });
+
+        for(prod of productsFiltrados){
+            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res);
+        }
 
         return res.status(200).json({
             ok:true,
