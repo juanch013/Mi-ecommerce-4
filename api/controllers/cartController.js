@@ -1,10 +1,9 @@
 const fs = require('fs');
-const productsToParse = fs.readFileSync('../data/productos', 'utf-8');
-
-const cartList = (req,res,next) => {
+const cartList = (req,res) => {
     const id = req.params.id;
+    console.log(2)
     try {
-        const usersToParse = fs.readFileSync('../data/user', 'utf-8');
+        const usersToParse = fs.readFileSync('/Users/marcobonzini/Desktop/Bootcamp/Sprint1/Mi-ecommerce-4/api/data/user.json', 'utf-8');
         const users = JSON.parse(usersToParse);
         const user = users.find(el => el.id === Number(id));
         if(!user){
@@ -24,11 +23,40 @@ const cartList = (req,res,next) => {
         })
 
     } catch (error) {
-        next();
+        console.log(error);
     }
 }
 
-/* const cartEdit = (req,res,next) => {
+const cartEdit = (req,res,next) => {
     const id = req.params.id;
-    const 
-} */
+    const cartUpdate = req.body;
+
+    try {
+        const usersToParse = fs.readFileSync('/Users/marcobonzini/Desktop/Bootcamp/Sprint1/Mi-ecommerce-4/api/data/user.json', 'utf-8');
+        const users = JSON.parse(usersToParse);
+        const user = users.find(el => el.id === Number(id));
+        console.log(user);
+        const cart = user.cart;
+        console.log(cart);
+        cartUpdate.forEach(element => {
+         const aux = cart.find(el => el.id == element.id);
+         if(!aux){
+            cart.push(element);
+         }else{
+            aux.quantity += element.quantity;
+         }
+         });
+        res.status(200).json({
+            msg: 'Carrito actualizado:',
+            cart
+        })
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = {
+    cartList, 
+    cartEdit
+};

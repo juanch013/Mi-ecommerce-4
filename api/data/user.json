@@ -6,7 +6,8 @@
     "firstname": "Tyne",
     "lastname": "Widdowfield",
     "profilepic": "",
-    "role": "admin"
+    "role": "admin",
+    "cart" : []
   }, {
     "id": 2,
     "email": "lkuhndel1@mashable.com",
@@ -15,7 +16,8 @@
     "firstname": "La verne",
     "lastname": "Kuhndel",
     "profilepic": "",
-    "role": "guest"
+    "role": "guest",
+    "cart" : []
   }, {
     "id": 3,
     "email": "emcparlin2@state.tx.us",
@@ -24,7 +26,8 @@
     "firstname": "Estrellita",
     "lastname": "McParlin",
     "profilepic": "",
-    "role": "guest"
+    "role": "guest",
+    "cart" : []
   }, {
     "id": 4,
     "email": "aprynne3@a8.net",
@@ -33,7 +36,8 @@
     "firstname": "Ashlan",
     "lastname": "Prynne",
     "profilepic": "",
-    "role": "god"
+    "role": "god",
+    "cart" : []
   }, {
     "id": 5,
     "email": "cferri4@alibaba.com",
@@ -42,7 +46,8 @@
     "firstname": "Carry",
     "lastname": "Ferri",
     "profilepic": "",
-    "role": "admin"
+    "role": "admin",
+    "cart" : []
   }, {
     "id": 6,
     "email": "fpurdey5@auda.org.au",
@@ -51,7 +56,8 @@
     "firstname": "Felizio",
     "lastname": "Purdey",
     "profilepic": "",
-    "role": "guest"
+    "role": "guest",
+    "cart" : []
   }, {
     "id": 7,
     "email": "laumerle6@alibaba.com",
@@ -60,7 +66,8 @@
     "firstname": "Livvyy",
     "lastname": "Aumerle",
     "profilepic": "",
-    "role": "guest"
+    "role": "guest",
+    "cart" : []
   }, {
     "id": 8,
     "email": "mlargan7@cisco.com",
@@ -69,7 +76,8 @@
     "firstname": "Maurizio",
     "lastname": "Largan",
     "profilepic": "",
-    "role": "god"
+    "role": "god",
+    "cart" : []
   }, {
     "id": 9,
     "email": "ljentin8@sun.com",
@@ -78,7 +86,8 @@
     "firstname": "Luz",
     "lastname": "Jentin",
     "profilepic": "",
-    "role": "guest"
+    "role": "guest",
+    "cart" : []
   }, {
     "id": 10,
     "email": "ssouth9@devhub.com",
@@ -87,5 +96,6 @@
     "firstname": "Sergent",
     "lastname": "South",
     "profilepic": "",
-    "role": "admin"
+    "role": "admin",
+    "cart" : []
   }]
