@@ -5,10 +5,6 @@
 		"price": "$739.14",
 		"description": "Extirpation of Matter from Lower Esophagus, Via Opening",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/242x100.png/cc0000/ffffff"
-			}
 		],
 		"category": "",
 		"mostwanted": true,
@@ -20,10 +16,6 @@
 		"price": "$775.90",
 		"description": "Introduction of Other Antineoplastic into POC, Endo",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/131x100.png/dddddd/000000"
-			}
 		],
     "gallery2": [],
     
@@ -37,10 +29,6 @@
 		"price": "$420.32",
 		"description": "Supplement Rectum with Nonaut Sub, Via Opening",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/232x100.png/cc0000/ffffff"
-			}
 		],
 		"category": "",
 		"mostwanted": true,
@@ -52,10 +40,6 @@
 		"price": "$753.29",
 		"description": "Reposition Left Internal Mammary Artery, Perc Endo Approach",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/172x100.png/cc0000/ffffff"
-			}
 		],
 		"category": "",
 		"mostwanted": false,
@@ -67,14 +51,6 @@
 		"price": "$455.33",
 		"description": "Division of Right Shoulder Muscle, Perc Endo Approach",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/132x100.png/cc0000/ffffff"
-			},
-			{
-				"picture-id": 2,
-				"picture-url": "http://dummyimage.com/139x100.png/5fa2dd/ffffff"
-			}
 		],
 		"category": "",
 		"mostwanted": true,
@@ -86,14 +62,6 @@
 		"price": "$345.13",
 		"description": "Excision of Right Tunica Vaginalis, Percutaneous Approach",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/107x100.png/5fa2dd/ffffff"
-			},
-			{
-				"picture-id": 2,
-				"picture-url": "http://dummyimage.com/185x100.png/cc0000/ffffff"
-			}
 		],
 		"category": "",
 		"mostwanted": true,
@@ -105,18 +73,6 @@
 		"price": "$444.50",
 		"description": "Excision of Right Pulmonary Artery, Open Approach",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/194x100.png/dddddd/000000"
-			},
-			{
-				"picture-id": 2,
-				"picture-url": "http://dummyimage.com/220x100.png/ff4444/ffffff"
-			},
-			{
-				"picture-id": 3,
-				"picture-url": "http://dummyimage.com/241x100.png/dddddd/000000"
-			}
 		],
 		"category": "",
 		"mostwanted": true,
@@ -128,18 +84,6 @@
 		"price": "$331.68",
 		"description": "Reposition Left Radius with Int Fix, Perc Endo Approach",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/231x100.png/dddddd/000000"
-			},
-			{
-				"picture-id": 2,
-				"picture-url": "http://dummyimage.com/159x100.png/5fa2dd/ffffff"
-			},
-			{
-				"picture-id": 3,
-				"picture-url": "http://dummyimage.com/105x100.png/dddddd/000000"
-			}
 		],
 		"category": "",
 		"mostwanted": false,
@@ -151,15 +95,6 @@
 		"price": "$950.79",
 		"description": "Dilate L Renal Art w 4+ Intralum Dev, Perc Endo",
 		"gallery": [
-			{
-				"picture-id": 1
-			},
-			{
-				"picture-id": 2
-			},
-			{
-				"picture-id": 3
-			}
 		],
 		"category": "",
 		"mostwanted": true,
@@ -171,10 +106,6 @@
 		"price": "$304.81",
 		"description": "Drainage of Left Posterior Tibial Artery, Open Approach",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/236x100.png/5fa2dd/ffffff"
-			}
 		],
 		"category": "",
 		"mostwanted": true,
@@ -186,10 +117,6 @@
 		"title": "",
 		"description": "Extirpation of Matter from Lower Esophagus, Via Opening",
 		"gallery": [
-			{
-				"picture-id": 1,
-				"picture-url": "http://dummyimage.com/242x100.png/cc0000/ffffff"
-			}
 		],
 		"stock": 1,
 		"mostwanted": true,
