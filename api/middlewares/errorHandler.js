@@ -6,7 +6,6 @@ function logErrors(err, req, res, next) {
 function clientErrorHandler(err, req, res, next) {
 	res.status(500).json({
 		error: err.message,
-		stack: err.stack,
 		message: 'Talk to the administrator',
 	});
 }
