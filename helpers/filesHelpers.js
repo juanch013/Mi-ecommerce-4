@@ -127,4 +127,5 @@ module.exports = {
     guardarProducts,
     eliminarPicturesDeProduct, 
     guardarPictures,
-    getPicturesFromProduct};
+    getPicturesFromProduct
+};

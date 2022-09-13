@@ -178,8 +178,6 @@ paths:
               stock:
                 type: number
 
-
-
     responses:
       '200':
         description: Litsado de productos
@@ -217,12 +215,3 @@ paths:
                       type: boolean
                     stock:
                       type: number
-
-
-
-      
-                        
-
-                      
-      
-        
