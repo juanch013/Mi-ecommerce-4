@@ -2,10 +2,10 @@ const fileHelpers = require('../../helpers/filesHelpers');
 
 const productsController = {
     listar: (req, res, next)=>{
-        let products = fileHelpers.getProducts(res);
+        let products = fileHelpers.getProducts(next);
 
         for(prod of products){
-            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res);
+            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res,next);
         }
 
         return res.status(200).json({
@@ -14,12 +14,12 @@ const productsController = {
     },
 
     detalle: (req, res, next)=>{
-        let products = fileHelpers.getProducts(res);
+        let products = fileHelpers.getProducts(next);
         const {id} = req.params;
 
         for(prod of products){
             if(prod.id == id){
-                prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res);
+                prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
                 return res.status(200).json({
                     ok: true,
                     msg: "ok",
@@ -35,13 +35,13 @@ const productsController = {
     },
 
     mostwanted: (req, res, next)=>{
-        let products = fileHelpers.getProducts(res);
+        let products = fileHelpers.getProducts(next);
         let filteredProducts = products.filter((prod)=>{
             return prod.mostwanted == true;
         })
 
         for(prod of filteredProducts){
-            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res);
+            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
         }
 
         return res.status(200).json({
@@ -61,7 +61,7 @@ const productsController = {
             })
         }
 
-        let products = fileHelpers.getProducts();
+        let products = fileHelpers.getProducts(next);
         products = fileHelpers.ordenarProductos(products);
 
         let newId = Number(products[products.length - 1].id) + 1;
@@ -79,7 +79,7 @@ const productsController = {
 
         products.push(newProduct);
 
-        fileHelpers.guardarProducts(products,res);
+        fileHelpers.guardarProducts(products,next);
 
         return res.status(201).json({
             ok:true,
@@ -107,7 +107,7 @@ const productsController = {
             })
         }
 
-        let products = fileHelpers.getProducts(res);
+        let products = fileHelpers.getProducts(next);
 
         if(!products.some((p)=>{ return p.id == id})){
             return res.status(404).json({
@@ -119,12 +119,12 @@ const productsController = {
 
         
         //elimina las imagenes del product que se va a eliminar
-        fileHelpers.eliminarPicturesDeProduct(id,res);
+        fileHelpers.eliminarPicturesDeProduct(id,next);
         
 
         //filtra os productos y guarda el array que no contiene el producto con producto.id == 'id'
         products = products.filter((prod)=>{return prod.id != id});
-        fileHelpers.guardarProducts(products ,res);
+        fileHelpers.guardarProducts(products ,next);
 
         return res.status(200).json({
             ok:true,
@@ -134,7 +134,7 @@ const productsController = {
     },
 
     busqueda: (req, res, next)=>{
-        let products = fileHelpers.getProducts();
+        let products = fileHelpers.getProducts(next);
         const q = req.query.q;
 
         if(q == undefined){
@@ -155,7 +155,7 @@ const productsController = {
         });
 
         for(prod of productsFiltrados){
-            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res);
+            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
         }
 
         return res.status(200).json({
