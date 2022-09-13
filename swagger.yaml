@@ -106,3 +106,123 @@ paths:
           description: Token válido
         '401':    # status code
           description: Usuario no autorizado
+
+  /products:
+   get:
+    tags:
+      - products
+    summary: Retorna la lista de productos del sistema
+    responses:
+      '200':
+        description: Litsado de productos
+      '500':
+        description: Internal error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                msg:
+                  type: string
+                data:
+                  type: array
+                  items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        title:
+                          type: string
+                        price:
+                          type: number
+                        description:
+                          type: string
+                        gallery:
+                          type: array
+                          items:
+                            type: number
+                        category:
+                          type: string
+                        mostwanted: 
+                          type: boolean
+                        stock:
+                          type: number
+
+   post:
+    tags:
+      - products
+    summary: Crea un nuevo producto en el sistema con los datos que le llegan en el body
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string 
+              price:
+                type: number
+              description:
+                type: string
+              gallery:
+                type: array
+                items:
+                  type: number
+              category:
+                type: string
+              mostwanted: 
+                type: boolean
+              stock:
+                type: number
+
+
+
+    responses:
+      '200':
+        description: Litsado de productos
+      '401':
+        description: Bad request
+      '500':
+        description: Internal error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                msg: 
+                  type: string
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    title:
+                      type: string
+                    price:
+                      type: number
+                    description:
+                      type: string
+                    gallery:
+                      type: array
+                      items:
+                        type: number
+                    category:
+                      type: string
+                    mostwanted: 
+                      type: boolean
+                    stock:
+                      type: number
+
+
+
+      
+                        
+
+                      
+      
+        
