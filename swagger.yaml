@@ -180,9 +180,12 @@ paths:
         application/json:
           schema:
             type: object
+            required:
+              - title
+              - price
             properties:
               title:
-                type: string 
+                type: string
               price:
                 type: number
               description:
@@ -335,7 +338,190 @@ paths:
                     type: boolean
                   stock:
                     type: number
-  
+    delete:
+      tags:
+        - products
+      responses:
+        '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                      example: false
+                    msg:
+                      type: string
+                      example: Server Error
+        '404':  
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  msg:
+                    type: string
+                    example: Producto no encontrado
+        '200':
+          description: Producto eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                    example: true
+                  msg: 
+                    type: string
+                    example: Producto eliminado correctamente
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      title:
+                        type: string
+                      price:
+                        type: number
+                      description:
+                        type: string
+                      gallery:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            url:
+                              type: string
+                            descripcion:
+                              type: string
+                            product_id:
+                              type: number
+                      category:
+                        type: string
+                      mostwanted: 
+                        type: boolean
+                      stock:
+                        type: number
+
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id de producto
+          schema:
+            type: string
+
+    put:
+      tags:
+        - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                price:
+                  type: number
+                description:
+                  type: string
+                category:
+                  type: string
+                mostwanted: 
+                  type: boolean
+                stock:
+                  type: number
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id de producto
+          schema:
+            type: string
+
+      responses:
+        '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                      example: false
+                    msg:
+                      type: string
+                      example: Server Error
+        '404':  
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  msg:
+                    type: string
+                    example: Producto no encontrado
+        '200':
+          description: Producto modificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                    example: true
+                  msg: 
+                    type: string
+                    example: Producto modificado correctamente
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      title:
+                        type: string
+                      price:
+                        type: number
+                      description:
+                        type: string
+                      gallery:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            url:
+                              type: string
+                            descripcion:
+                              type: string
+                            product_id:
+                              type: number
+                      category:
+                        type: string
+                      mostwanted: 
+                        type: boolean
+                      stock:
+                        type: number
+
+
   /products/mostwanted:
     get:
       tags:
