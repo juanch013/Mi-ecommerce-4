@@ -17,7 +17,7 @@ const getProducts = (res)=>{
 //retorna un array de objetos literales con los usuarios del sistema
 const getUsers = (res)=>{
     try {
-        let usersToParse = fs.readFileSync('./api/data/users.json');
+        let usersToParse = fs.readFileSync('./api/data/user.json');
         return JSON.parse(usersToParse);
     } catch (error) {
         console.log(error);
@@ -33,7 +33,7 @@ const getUsers = (res)=>{
 //string en formato json y los guarda en el archivo users.json
 const guardarUsers = (arr, res)=>{
     try {
-        fs.writeFileSync('./api/data/users.json',JSON.stringify(arr));
+        fs.writeFileSync('./api/data/user.json',JSON.stringify(arr));
     } catch (error) {
         console.log(error);
         return res.status(500).json({

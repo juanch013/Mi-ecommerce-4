@@ -1,34 +1,88 @@
-const fs = require('fs');
-const productsToParse = fs.readFileSync('../data/productos', 'utf-8');
+const filesHandler = require('../../helpers/filesHelpers');
 
-const cartList = (req,res,next) => {
+//req.newuser
+
+const cartList = (req,res) => {
     const id = req.params.id;
-    try {
-        const usersToParse = fs.readFileSync('../data/user', 'utf-8');
-        const users = JSON.parse(usersToParse);
-        const user = users.find(el => el.id === Number(id));
-        if(!user){
-            return res.stauts(404).json({
-                msg: 'Id de usuario no encontrado'
-            })
-        }
-        const cart = user.cart;
-        if(cart.lenght == 0){
+    //if(req.newUser.id == id || req.newUser.role == 'god' || req.newUser.role == 'admin'){
+        try {
+            const users = filesHandler.getUsers(res);
+            const user = users.find(el => el.id === Number(id));
+            if(!user){
+                res.status(404).json({
+                    msg: 'Id de usuario no encontrado.'
+                })
+            }
+            const cart = user.cart;
+            if(cart.length == 0){
+                res.status(200).json({
+                    msg: 'El carrito del usuario ' + user.username + ' esta vacio.'
+                })
+            }
             res.status(200).json({
-                msg: 'El carrito de ' + user.name + ' esta vacio'
+                msg: 'Carrito del usuario ' + user.username,
+                cart
             })
-        }
-        res.status(200).json({
-            msg: 'Carrito del usuario ' + user.username,
-            cart
-        })
 
-    } catch (error) {
-        next();
-    }
+        } catch (error) {
+            console.log(error);
+        }
+    // }else{
+    //     res.status(500).json({
+    //         msg: 'No tienes los permisos para efectuar esta accion'
+    //     })
+    // }
+
 }
 
-/* const cartEdit = (req,res,next) => {
+const cartEdit = (req,res,next) => {
     const id = req.params.id;
-    const 
-} */
+    const cartUpdate = req.body;
+    console.log(cartUpdate.length);
+    if(cartUpdate.length > 0){
+   
+    //if(req.newUser.id == id || req.newUser.role == 'god'){
+        try {
+            const users = filesHandler.getUsers(res);
+            const user = users.find(el => el.id === Number(id));            
+            if(!user){
+                res.status(404).json({
+                    msg: 'Id de usuario no encontrado.'
+                })
+            }
+            
+            const cart = user.cart;
+            cartUpdate.forEach(element => {
+            const aux = cart.find(el => el.id == element.id);
+            if(!aux){
+                cart.push(element);
+            }else{
+                aux.quantity += element.quantity;
+            }
+            });
+            res.status(200).json({
+                msg: 'Carrito actualizado:',
+                cart
+            })
+            filesHandler.guardarUsers(users,res);
+            
+        } catch (error) {
+            next();
+        }
+    // }else{
+    //     res.status(500).json({
+    //         msg: 'No tienes los permisos para efectuar esta accion'
+    //     })
+    //} 
+     }else{
+        res.status(500).json({
+            msg: 'Debe ingresar al menos un producto'
+        })
+    }
+
+}
+
+module.exports = {
+    cartList, 
+    cartEdit
+};
