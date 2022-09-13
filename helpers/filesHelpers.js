@@ -52,6 +52,7 @@ const guardarPictures = (arr,next)=>{
 //recibe un array de objetos literales con todos los usuarios del sistema, los transforma a un
 //string en formato json y los guarda en el archivo users.json
 
+
 const guardarUsers = (arr,next) => {
   try {
 		fs.writeFileSync('./api/data/user.json', JSON.stringify(arr));

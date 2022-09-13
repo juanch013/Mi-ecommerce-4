@@ -23,7 +23,6 @@ const verifyJWT = (req, res, next) => {
 		const decoded = jwt.verify(token, SECRETORPRIVATEKEY);
 
 		req.newUsers = decoded;
-		console.log(req.newUsers);
 		next();
 	} catch (error) {
     console.log(error);
