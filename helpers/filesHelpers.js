@@ -32,9 +32,10 @@ const getImages = (next)=>{
 }
 
 //recibe por parametro el id del producto y recibe todas las pictures ue tiene asiganda este producto
-const getPicturesFromProduct = (id,res)=>{
-  let pictures = getImages(res);
-  let picturesProduct = pictures.filter(p => p.product_id == id)
+const getPicturesFromProduct = (id,next)=>{
+  let pictures = getImages(next);
+  let picturesProduct = pictures.filter(p => p.productId == id)
+  console.log(picturesProduct);
   return picturesProduct;
 }
 
@@ -52,7 +53,8 @@ const guardarPictures = (arr,next)=>{
 //recibe un array de objetos literales con todos los usuarios del sistema, los transforma a un
 //string en formato json y los guarda en el archivo users.json
 
-const guardarUsers = (arr, next) => {
+
+const guardarUsers = (arr,next) => {
   try {
 		fs.writeFileSync('./api/data/user.json', JSON.stringify(arr));
 	} catch (error) {
@@ -85,8 +87,8 @@ const ordenarProductos = (arr) => {
 //filtra las imagenes del sistema eliminando las imagenes con el product-id pasado por param
 const eliminarPicturesDeProduct = (id,next) => {
   try {
-      let pictures = getImages(res);
-      pictures = pictures.filter((p)=>{return p.product_id != id})
+      let pictures = getImages(next);
+      pictures = pictures.filter((p)=>{return p.productId != id})
       guardarPictures(pictures);
   } catch (error) {
     next(error);
