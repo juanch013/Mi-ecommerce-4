@@ -1,12 +1,11 @@
 require('dotenv').config();
-// const usersRoutes = require('./api/routes/usersRoutes');
-// const productsRoutes = require('./api/routes/productsRoutes');
-const pictureRoutes = require('./api/routes/picturesRoutes');
-// const cartsRoutes = require('./api/routes/cartsRoutes');
-
 const express = require('express');
-
 const route = express.Router();
+
+//const usersRoutes = require('./api/routes/usersRoutes');
+const productsRoutes = require('./api/routes/productsRoutes');
+const pictureRoutes = require('./api/routes/picturesRoutes');
+const cartsRoutes = require('./api/routes/cartRoutes');
 
 //Swagger
 const swaggerUi = require('swagger-ui-express');
@@ -23,11 +22,13 @@ const PORT = 3000;
 
 app.use(express.json());
 //prueba
-app.use('/api/v1/',route);
+//app.use('/api/v1/',route);
 // route.use('/users', usersRoutes);
 // route.use('/products', productsRoutes);
-route.use('/pictures', pictureRoutes);
+//route.use('/pictures', pictureRoutes);
 // route.use('/carts', cartsRoutes);
+// route.use('/pictures', pictureRoutes);
+app.use('/cart', cartsRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

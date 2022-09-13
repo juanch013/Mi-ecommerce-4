@@ -11,6 +11,7 @@ const getProducts = (res, next) => {
 };
 
 //retorna un array de objetos literales con los usuarios del sistema
+
 const getUsers = (res, next) => {
 	try {
 		let usersToParse = fs.readFileSync('./api/data/users.json');
@@ -45,10 +46,12 @@ const guardarPictures = (arr,res, next)=>{
   } catch (error) {
     next(error);
   }
+
 }
 
 //recibe un array de objetos literales con todos los usuarios del sistema, los transforma a un
 //string en formato json y los guarda en el archivo users.json
+
 const guardarUsers = (arr, res, next) => {
   try {
 		fs.writeFileSync('./api/data/users.json', JSON.stringify(arr));
@@ -56,6 +59,7 @@ const guardarUsers = (arr, res, next) => {
     next(error);
 	}
 };
+
 
 //recibe un array de objetos literales con todos los productos del sistema, los transforma a un
 //string en formato json y los guarda en el archivo products.json
