@@ -13,9 +13,9 @@ servers:
     description: Entorno Desarrollo
     
 tags:
-  - name: usuarios
+  - name: users
     description: Todos los endpoints de usuarios
-  - name: productos
+  - name: products
     description: Todos los endpoints de productos
 
 components:
@@ -28,84 +28,327 @@ components:
 paths:
   /users:
     get:
-      tags: 
-        - usuarios
-      summary: Retorna listado de usuario.
+      tags:
+        - users
+      summary: Retorna la lista de usuarios registrados en el sistema
       responses:
-        '200':    # status code
-          description: Un array de usuarios
+        '200':
+          description: lista de usuarios  
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
-                items: 
-                  type: string
+                items:
+                  type: object
+                  properties: 
+                    id: 
+                      type: number
+                    email:
+                      type: string
+                    username:
+                      type: string
+                    first-name:
+                      type: string
+                    last-name: 
+                      type: string
+                    profilepic:
+                      type: string
+                    role:
+                      type: string
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+
     post:
-      tags: 
-        - usuarios
-      summary: Crear un usuario
+      tags:
+        - users
+      summary: Crea un nuevo usuario en el sistema
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
+              required:
+                - email
+                - username
+                - password
+                - firstname
+                - lastname
+                - role
               properties:
-                nombre:
+                email:
+                  type: string 
+                username:
                   type: string
-      responses: 
+                password:
+                  type: string   
+                firstname:
+                  type: string  
+                lastname:
+                  type: string  
+                profilepic: 
+                  type: string  
+                role:
+                  type: string  
+      responses:
         '201':
-          description: Created
-        '400':
-          description: Bad request
+          description: usuario agregado
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  msj:
+                    email:
+                      type: string 
+                    username:
+                      type: string
+                    firstname:
+                      type: string  
+                    lastname:
+                      type: string  
+                    profilepic: 
+                      type: string  
+                    role:
+                      type: string
+                    cart:
+                      type: array
+                      example: []
+
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
                     type: string
-  /users/{username}:
-    delete:
-      tags: 
-        - usuarios
-      summary: Elimina un usuario
+                    example: user already exists.
+  
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+    
+    
+
+  /users/:id:
+    get:  
+      tags:
+        - users
+      summary: Devuelve el detalle de un usuario
       parameters:
-        - in: path
-          name: username
-          schema:
-            type: string
+        - name: id
+          in: path
           required: true
-          description: Nombre de usuario
-      
-      responses: 
+          schema:
+            type: number
+      responses:
         '200':
-          description: El usuario ha sido eliminado
-        '409':
-          description: El usuario no ha sido eliminado
-  /demo:
-    get:
-      tags: 
-        - usuarios
-      summary: Retorna listado de usuario.
-      security:
-        - bearerAuth: []
+          description: Detalle de usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: 
+                    type: number
+                  email:
+                    type: string
+                  username:
+                    type: string
+                  first-name:
+                    type: string
+                  last-name: 
+                    type: string
+                  profilepic:
+                    type: string
+                  role:
+                    type: string
+        '404':
+          description: Usuario no encontrado
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:  
+                    type: string
+                    example: User does not exists
+                    
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+    put:
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - username
+                - password 
+                - firstname
+                - lastname
+                - role
+                - cart
+              properties:
+                email:
+                  type: string 
+                username:
+                  type: string
+                password:
+                  type: string   
+                firstname:
+                  type: string  
+                lastname:
+                  type: string  
+                profilepic: 
+                  type: string  
+                role:
+                  type: string 
+                cart:
+                  type: array
+                  example: []
       responses:
-        '200':    # status code
-          description: Un array de usuarios
-        '401':    # status code
-          description: Usuario no autorizado  
-          
-  /login:
-    post:
-      tags: 
-        - usuarios
-      summary: Retorna un token para utilizar en el endpoint demo
+        '200':
+          description: usuario modificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    email:
+                      type: string 
+                    username:
+                      type: string
+                    firstname:
+                      type: string  
+                    lastname:
+                      type: string  
+                    profilepic: 
+                      type: string  
+                    role:
+                      type: string
+                    cart:
+                      type: array
+                      example: []
+        '400':
+          description: usuario modificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:  
+                    type: string
+                    example: bad request
+        '404':
+          description: usuario modificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: user does not exists.
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+    delete:
+      tags:
+        - users
+      summary: Elimina el usuario con id pasado por parametro
+      parameters:
+        - name: id
+          description: "id del usuario que desea eliminar"
+          in: path
+          required: true
+          schema:
+            type: number
       responses:
-        '200':    # status code
-          description: Token válido
-        '401':    # status code
-          description: Usuario no autorizado
+        # '400':
+
+        '200':
+          description: usuario eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    email:
+                      type: string 
+                    username:
+                      type: string
+                    firstname:
+                      type: string  
+                    lastname:
+                      type: string  
+                    profilepic: 
+                      type: string  
+                    role:
+                      type: string
+                    cart:
+                      type: array
+                      example: []
+        '404':
+          description: usuario modificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: user does not exists.
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
 
   /products:
    get:
@@ -585,11 +828,19 @@ paths:
                           stock:
                             type: number
   
-<<<<<<< HEAD
   /products/search:
     get:
       tags:
         - products
+
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: palabra para realizar la busqueda
+          schema:
+            type: string
+
       responses:
         '500':
           description: Internal error
@@ -606,7 +857,7 @@ paths:
                     example: Server Error
               
         '200':
-          description: Listado de productos 'mostwanted'
+          description: Listado de productos que contengan la o las palabras pasadas por query string en su titulo o descripcion
           content:
             application/json:
               schema:
@@ -616,6 +867,7 @@ paths:
                     type: boolean
                   msg:
                     type: string
+                    example: busqueda exitosa
                   data:
                     type: array
                     items:
@@ -648,5 +900,3 @@ paths:
                             type: boolean
                           stock:
                             type: number
-=======
->>>>>>> main
