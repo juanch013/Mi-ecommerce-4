@@ -7,7 +7,8 @@
         "firstname": "Nicolas",
         "lastname": "Caceres",
         "profilepic": "",
-        "role": "guest"
+        "role": "guest",
+        "cart": []
     },
     {
         "id": 3,
@@ -17,7 +18,9 @@
         "firstname": "Agustina",
         "lastname": "Razquin",
         "profilepic": "",
-        "role": "guest"
+        "role": "guest",
+        "cart": []
+
     },
     {
         "id": 4,
@@ -27,7 +30,9 @@
         "firstname": "Felipe",
         "lastname": "Parada",
         "profilepic": "",
-        "role": "god"
+        "role": "god",
+        "cart": []
+
     },
     {
         "id": 5,
@@ -37,7 +42,9 @@
         "firstname": "Juan",
         "lastname": "Cabrera",
         "profilepic": "",
-        "role": "admin"
+        "role": "admin",
+        "cart": []
+
     },
     {
         "id": 6,
@@ -47,7 +54,9 @@
         "firstname": "Juan",
         "lastname": "Galvan",
         "profilepic": "",
-        "role": "god"
+        "role": "god",
+        "cart": []
+
     },
     {
         "id": 7,
@@ -57,6 +66,8 @@
         "firstname": "Marco",
         "lastname": "Bonzini",
         "profilepic": "",
-        "role": "admin"
+        "role": "admin",
+        "cart": []
+
     }
 ]
