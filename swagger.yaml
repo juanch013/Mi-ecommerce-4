@@ -584,3 +584,4 @@ paths:
                             type: boolean
                           stock:
                             type: number
+  
