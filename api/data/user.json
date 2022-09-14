@@ -1,19 +1,5 @@
 [
 	{
-		"id": 1,
-		"email": "twiddowfield0@marriott.com",
-		"username": "twiddowfield0",
-		"password": "uYH9WfjL",
-		"firstname": "Tyne",
-		"lastname": "Widdowfield",
-		"profilepic": "",
-		"role": "admin",
-		"cart": [
-			{ "id": "1", "quantity": 30 },
-			{ "id": "2", "quantity": 32 }
-		]
-	},
-	{
 		"id": 2,
 		"email": "nico@gmail.com",
 		"username": "nico",
