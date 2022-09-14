@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const productsController = require('../controllers/productsController');
-const fileHelpers = require('../../helpers/filesHelpers');
 const dataValidation = require('../middlewares/productDataValidation');
 const { verifyJWT } = require('../middlewares/verifyJWT');
 
@@ -12,6 +11,8 @@ router.get('/', productsController.listar);
 router.get('/mostwanted', productsController.mostwanted);
 
 router.get('/search', productsController.busqueda);
+
+router.get('/:id/pictures', productsController.pictures);
 
 router.get('/:id', productsController.detalle);
 
