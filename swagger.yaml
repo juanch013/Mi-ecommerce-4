@@ -9,7 +9,7 @@ info:
     - [Repositorio de Github](https://github.com/)
   
 servers:
-  - url: http://localhost:3000/v1
+  - url: http://localhost:3000/api/v1
     description: Entorno Desarrollo
     
 tags:
@@ -585,6 +585,7 @@ paths:
                           stock:
                             type: number
   
+<<<<<<< HEAD
   /products/search:
     get:
       tags:
@@ -647,3 +648,5 @@ paths:
                             type: boolean
                           stock:
                             type: number
+=======
+>>>>>>> main
