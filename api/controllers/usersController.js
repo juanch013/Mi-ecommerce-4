@@ -2,19 +2,29 @@ const bcrypt = require('bcrypt');
 const fileHelpers = require('../../helpers/filesHelpers');
 const {generateJWT} = require('../../helpers/generateJWT');
 
-const validateUserFilds = (userObject) => {
+const validateUserFields = (userObject) => {
     const {email, username, password, firstname, lastname, profilepic, role} = userObject;
-    if(typeof email     === 'string' && 
-    typeof username  === 'string' && 
-    typeof password  === 'string' && 
-    typeof firstname === 'string' && 
-    typeof lastname  === 'string' &&
-    typeof role      === 'string' &&
-    (typeof profilepic  === 'string' || typeof profilepic === 'undefined'))
-    {
-      return true;
-    }
-    return false;
+    return (typeof email === 'string' && 
+            typeof username === 'string' && 
+            typeof password === 'string' &&
+            typeof firstname === 'string' && 
+            typeof lastname === 'string' &&
+            typeof role === 'string' &&
+            (typeof profilepic === 'string' || typeof profilepic === 'undefined'))
+}
+
+//Recibe array de usuarios y un id de usuario. 
+//Retorna el indice del usuario en el array de usuarios cuyo id coincide con el parametro id recibido.
+const findUserById = (users, id) => {
+    let userIndex = -1;
+    users.forEach((user, index) => {
+        if(user.id === id)
+        {
+            userIndex = index;
+        }
+    })
+    return userIndex;
+
 }
 
 const usersController = {
@@ -23,31 +33,22 @@ const usersController = {
         res.status(200).send(users);
     }, 
 
-    getUser: function(req, res,next) {
+    getUser: function(req, res, next) {
         const users = fileHelpers.getUsers(next);
-        const userId = req.params.id;
+        const userId = Number(req.params.id);
 
-        if(typeof userId !== 'number')
+        const userIndex = findUserById(users, userId);
+        if(userIndex < 0)
         {
-            return res.stauts(400).json({"msg": "Bad request"})
+            return res.status(404).json({"msg": "User does not exists."})
         }
-        const userIndex = userId - 1;
-
-        if(!(userIndex < users.length))
-        {
-            return res.stauts(404).json({"msg": "User does not exists."})
-        }
-        if(users[userIndex].id !== userId)
-        {
-            return res.stauts(500).send({"msg" : "Database error: Please, notify server admin."});
-        }
-        return res.stauts(200).json(users[userIndex]);
+        return res.status(200).json(users[userIndex]);
 
     },
 
     createUser: function(req, res, next) {
         const userFromRequest = req.body;
-        if(!validateUserFilds(userFromRequest))
+        if(!validateUserFields(userFromRequest))
         {
           return res.status(400).json({"msg": "Bad request"})
         }
@@ -100,7 +101,7 @@ const usersController = {
             success:true,
             message:"authorized",
             user:{
-                idUser:usuarioFind.id,
+                idUser: usuarioFind.id,
                 username: usuarioFind.username
             },
             token: token
@@ -108,47 +109,49 @@ const usersController = {
 
     },
 
-    updateUser: function(req, res,next) {
+    updateUser: function(req, res, next) {
         let users = fileHelpers.getUsers(next);
-        const userId = req.params.id;
         const userFromRequest = req.body;
+        const userId = Number(req.params.id);
+
+        const userIndex = findUserById(users, userId);
+
+        if(userIndex < 0)
+        {
+            return res.status(404).json({"msg": "User does not exists."})
+        }
         
-        if(!validateUser(userFromRequest))
+        if(!validateUserFields(userFromRequest))
         {
             return res.status(400).json({"msg": "Bad request"});
         }
-        if(typeof userId !== 'number')
-        {
-            return res.stauts(400).json({"msg": "Bad request"});
-        }
+        // Se hashea la contraseña
+        userFromRequest.password = bcrypt.hashSync(userFromRequest.password, 10);
         
-        const userIndex = userId - 1;
-        if(!(userIndex < users.length))
-        {
-            return res.stauts(404).json({"msg": "Bad request: User does not exists."});
-        }
-        const userToEdit = req.body;
-        users[userIndex] = userToEdit;
+        users[userIndex] = {userId, ...userFromRequest};
         fileHelpers.guardarUsers(users, next);
-        return res.status(200).json(users[userIndex]);
+        return res.status(200).json(userFromRequest);
     },
 
     deleteUser: function(req, res,next) {
-        
-    },
+        let users = fileHelpers.getUsers(next);
+        const userId = Number(req.params.id);
+
+        const userIndex = findUserById(users, userId);
+        console.log(userId, " ", userIndex);
+        if(userIndex < 0)
+        {
+            return res.status(404).json({"msg": "User does not exists."});
+        }
+        const userToDelete = users[userIndex];
+        for(let i = userIndex; i < users.length - 1; i++)
+        {
+            users[i] = users[i + 1];
+        }
+        users.pop();
+        fileHelpers.guardarUsers(users, next);
+        return res.status(200).json(userToDelete);
+    }
 }
 
-module.exports = usersController
-
-
-// router.get('/', usersControlle.listUsers);
-
-// router.get('/:id', usersControlle.getUser);
-
-// router.post('/', usersControlle.createUser);
-
-// //router.post('/login', usersControlle.login);
-
-// router.put('/:id', usersControlle.updateUser);
-
-// router.delete('/:id', usersControlle.deleteUser);
+module.exports = usersController;
