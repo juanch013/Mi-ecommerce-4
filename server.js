@@ -6,6 +6,7 @@ const usersRoutes = require('./api/routes/usersRoutes');
 const productsRoutes = require('./api/routes/productsRoutes');
 const picturesRoutes = require('./api/routes/picturesRoutes');
 const cartsRoutes = require('./api/routes/cartRoutes');
+const usersController = require('./api/controllers/usersController');
 
 //Swagger
 const swaggerUi = require('swagger-ui-express');
@@ -22,10 +23,11 @@ app.use(express.json());
 
 //Routes
 app.use('/api/v1/',route);
+route.post('/login', usersController.login);
 route.use('/users', usersRoutes);
 route.use('/products', productsRoutes);
 route.use('/pictures', picturesRoutes);
-route.use('/cart', cartsRoutes);
+route.use('/carts', cartsRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
