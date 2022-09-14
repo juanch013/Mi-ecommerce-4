@@ -17,6 +17,16 @@ const productsController = {
         let products = fileHelpers.getProducts(next);
         const {id} = req.params;
 
+        // let idParams = req.params.id
+        // let idQuery = req.query.id
+
+        // if(!idParams && !idQuery){
+        //     return
+        // }
+
+        // let id = idParams == undefined? idQuery : idParams
+
+
         for(prod of products){
             if(prod.id == id){
                 prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
@@ -178,12 +188,11 @@ const productsController = {
         }
 
         const {title, description, price, gallery, category, mostwanted, stock} = req.body;
-        let products = fileHelpers.getProducts();
+        let products = fileHelpers.getProducts(next);
         let prodModificado = {};
 
         for(prod of products){
             if(prod.id == id){
-                prodModificado = prod;
                 prod.title = title == undefined || title == "" ? prod.title : title;
                 prod.description = description == undefined || description == "" ? prod.description : description;
                 prod.price = price == undefined? prod.price : price;
@@ -191,15 +200,17 @@ const productsController = {
                 prod.mostwanted = mostwanted == undefined? prod.mostwanted : mostwanted;
                 prod.category = category == undefined? prod.undefined : undefined;
                 prod.gallery = gallery == undefined? prod.gallery : gallery;
-
+                prodModificado = prod;
                 break;
             }
         }
+        
+        fileHelpers.guardarProducts(products, next);
 
         return res.status(200).json({
             ok:true,
             msg:`Se modifico exitosamente el producto Nro${id}`,
-            data:prod
+            data:prodModificado
         })
     }
 
