@@ -22,8 +22,7 @@ const getPictures = (req, res, next) => {
 			req.newUsers.role !== 'guest' &&
 			req.newUsers.role !== 'god'
 		) {
-			return res.status(401).json({
-				auth: false,
+			return res.status(401).json({ 
 				message: 'You are not authorized to access this resource',
 			});
 		}
@@ -83,7 +82,6 @@ const getPicture = (req, res, next) => {
 			req.newUsers.role !== 'god'
 		) {
 			return res.status(401).json({
-				auth: false,
 				message: 'You are not authorized to access this resource',
 			});
 		}
@@ -127,7 +125,6 @@ const createPicture = (req, res, next) => {
 
 		if (req.newUsers.role !== 'admin' && req.newUsers.role !== 'god') {
 			return res.status(401).json({
-				auth: false,
 				message: 'You are not authorized to access this resource',
 			});
 		}
@@ -192,7 +189,6 @@ const updatePicture = (req, res, next) => {
 
 		if (req.newUsers.role !== 'admin' && req.newUsers.role !== 'god') {
 			return res.status(401).json({
-				auth: false,
 				message: 'You are not authorized to access this resource',
 			});
 		}
