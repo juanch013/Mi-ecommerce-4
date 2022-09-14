@@ -15,6 +15,19 @@ const {
 const getPictures = (req, res, next) => {
 	try {
 		const productId = req.query.product;
+
+		console.log(typeof req.newUsers.role);
+		if (
+			req.newUsers.role !== 'admin' &&
+			req.newUsers.role !== 'guest' &&
+			req.newUsers.role !== 'god'
+		) {
+			return res.status(401).json({
+				auth: false,
+				message: 'You are not authorized to access this resource',
+			});
+		}
+
 		if (!productId) {
 			return res.status(400).json({ error: 'Id is required', message: '' });
 		}
@@ -25,21 +38,23 @@ const getPictures = (req, res, next) => {
 				.json({ error: 'Id must be a number', message: '' });
 		}
 
-    const products = getProducts(res, next);
-    
-    const productExists = products.find((product) => product.id === parseInt(productId));
-    if (!productExists) {
-      return res.status(404).json({ error: 'Product not found', message: '' });
-    }
+		const products = getProducts(res, next);
 
-    // Se lee el arhivo de pictures
-    const pictures = getImages(res, next); 
+		const productExists = products.find(
+			(product) => product.id === parseInt(productId)
+		);
+		if (!productExists) {
+			return res.status(404).json({ error: 'Product not found', message: '' });
+		}
 
-    console.log(pictures);
-    const picturesProduct = pictures?.filter(
+		// Se lee el arhivo de pictures
+		const pictures = getImages(res, next);
+
+		console.log(pictures);
+		const picturesProduct = pictures?.filter(
 			(picture) => picture.productId === parseInt(productId)
 		);
-    
+
 		if (!picturesProduct.length) {
 			return res
 				.status(404)
@@ -52,7 +67,6 @@ const getPictures = (req, res, next) => {
 	}
 };
 
-
 // GET /pictures/:id
 // Acción: Recupera la picture con el id solicitado. Responde con la información completa de la picture con el id buscado.
 // Response codes:
@@ -62,6 +76,17 @@ const getPictures = (req, res, next) => {
 const getPicture = (req, res, next) => {
 	try {
 		const pictureId = req.params.id;
+
+		if (
+			req.newUsers.role !== 'admin' &&
+			req.newUsers.role !== 'guest' &&
+			req.newUsers.role !== 'god'
+		) {
+			return res.status(401).json({
+				auth: false,
+				message: 'You are not authorized to access this resource',
+			});
+		}
 
 		if (!pictureId) {
 			return res.status(400).json({ error: 'Id is required', message: '' });
@@ -73,7 +98,7 @@ const getPicture = (req, res, next) => {
 				.json({ error: 'Id must be a number', message: '' });
 		}
 
-    const pictures = getImages(res, next);
+		const pictures = getImages(res, next);
 
 		const picture = pictures?.find(
 			(picture) => picture.id === parseInt(pictureId)
@@ -89,7 +114,6 @@ const getPicture = (req, res, next) => {
 	}
 };
 
-
 // POST /pictures
 // Acción: Crea una nueva picture. Debe recibir un body con la info de la picture a crear.
 // Responde con la info completa de la nueva picture.
@@ -100,6 +124,13 @@ const getPicture = (req, res, next) => {
 const createPicture = (req, res, next) => {
 	try {
 		const { pictureUrl, pictureDescription, productId } = req.body;
+
+		if (req.newUsers.role !== 'admin' && req.newUsers.role !== 'god') {
+			return res.status(401).json({
+				auth: false,
+				message: 'You are not authorized to access this resource',
+			});
+		}
 
 		if (!pictureUrl || !pictureDescription || !productId) {
 			return res.status(400).json({ error: 'Missing data', message: '' });
@@ -146,7 +177,6 @@ const createPicture = (req, res, next) => {
 	}
 };
 
-
 // PUT /pictures/:id
 // Acción: Actualiza la picture identificada con id. Debe recibir un body con la info de la picture a modificar.
 // Responde con la info completa de la picture modificada.
@@ -156,9 +186,16 @@ const createPicture = (req, res, next) => {
 // 404 Not Found (si no existe la picture con el id solicitado)
 // 500 Server Error.
 const updatePicture = (req, res, next) => {
-  try {
+	try {
 		const { pictureUrl, pictureDescription } = req.body;
 		const pictureId = req.params.id;
+
+		if (req.newUsers.role !== 'admin' && req.newUsers.role !== 'god') {
+			return res.status(401).json({
+				auth: false,
+				message: 'You are not authorized to access this resource',
+			});
+		}
 
 		if (!pictureUrl || !pictureDescription || !pictureId) {
 			return res.status(400).json({ error: 'Missing data', message: '' });
@@ -170,7 +207,7 @@ const updatePicture = (req, res, next) => {
 				.json({ error: 'Id must be a number', message: '' });
 		}
 
-    const pictures = getImages(res, next);
+		const pictures = getImages(res, next);
 
 		const picture = pictures.find(
 			(picture) => picture.id === parseInt(pictureId)
@@ -192,7 +229,6 @@ const updatePicture = (req, res, next) => {
 	}
 };
 
-
 // DELETE /pictures/:id
 // Acción: Eliminar la picture identificada con id. Responde con información sobre la eliminación realizada.
 // Response codes:
@@ -202,6 +238,13 @@ const updatePicture = (req, res, next) => {
 const deletePicture = (req, res, next) => {
 	try {
 		const pictureId = req.params.id;
+
+		if (req.newUsers.role !== 'admin' && req.newUsers.role !== 'god') {
+			return res.status(401).json({
+				auth: false,
+				message: 'You are not authorized to access this resource',
+			});
+		}
 
 		if (!pictureId) {
 			return res.status(400).json({ error: 'Id is required', message: '' });
@@ -213,7 +256,7 @@ const deletePicture = (req, res, next) => {
 				.json({ error: 'Id must be a number', message: '' });
 		}
 
-    const pictures = getImages(res, next);
+		const pictures = getImages(res, next);
 
 		const picture = pictures.find(
 			(picture) => picture.id === parseInt(pictureId)
@@ -226,11 +269,10 @@ const deletePicture = (req, res, next) => {
 		const index = pictures.indexOf(picture);
 		pictures.splice(index, 1);
 
-    // Se borra la picture del archivo
-    guardarPictures(pictures, next);
+		// Se borra la picture del archivo
+		guardarPictures(pictures, next);
 
-		res.status(200).json({ message: 'Picture deleted',
-    picture: picture });
+		res.status(200).json({ message: 'Picture deleted', picture: picture });
 	} catch (error) {
 		next(error);
 	}

@@ -52,7 +52,7 @@ const productsController = {
     crear: (req, res, next)=>{
         const{title, price, description, gallery, stock, mostwanted, category} = req.body;
 
-        const rol = req.newUsers.rol;
+        const rol = req.newUsers.role;
         
         if(rol == "guest"){
             return res.status(401).json({
@@ -91,7 +91,7 @@ const productsController = {
 
     eliminar: (req, res, next)=>{
         const {id} = req.params;
-        const rol = req.newUsers.rol;
+        const rol = req.newUsers.role;
         
         if(rol == "guest"){
             return res.status(401).json({
@@ -167,6 +167,15 @@ const productsController = {
 
     modificar: (req, res, next)=>{
         const {id} = req.params;
+
+        const rol = req.newUsers.role;
+        
+        if(rol == "guest"){
+            return res.status(401).json({
+                ok: false,
+                msg:'No tiene permisos suficientes'
+            })
+        }
 
         const {title, description, price, gallery, category, mostwanted, stock} = req.body;
         let products = fileHelpers.getProducts();
