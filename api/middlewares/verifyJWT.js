@@ -2,11 +2,14 @@ const jwt = require('jsonwebtoken');
 const { SECRETORPRIVATEKEY } = process.env;
 
 const extractToken = (req) => {
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-       return req.headers.authorization.split(' ')[1];
-    }
-    return null;
- }
+	if (
+		req.headers.authorization &&
+		req.headers.authorization.split(' ')[0] === 'Bearer'
+	) {
+		return req.headers.authorization.split(' ')[1];
+	}
+	return null;
+};
 
 const verifyJWT = (req, res, next) => {
 	try {
@@ -25,12 +28,12 @@ const verifyJWT = (req, res, next) => {
 		req.newUsers = decoded;
 		next();
 	} catch (error) {
-    console.log(error);
-    res.status(401).json({
-      auth: false,
-      msg: 'Invalid token',
-    });
-  }
+		console.log(error);
+		res.status(401).json({
+			auth: false,
+			msg: 'Invalid token',
+		});
+	}
 };
 
-module.exports = {verifyJWT,extractToken};
+module.exports = { verifyJWT, extractToken };
