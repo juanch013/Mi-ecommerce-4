@@ -76,8 +76,11 @@ const usersController = {
         let users = fileHelpers.getUsers(next);
         let usuarioFind = users.find(u => u.username == username);
 
-        // Se compara la contraseña hasheada con la contraseña ingresada por el usuario
-        const passwordMatch = bcrypt.compareSync(password, usuarioFind.password);
+        let passwordMatch = null
+        if (usuarioFind) {
+          // Se compara la contraseña hasheada con la contraseña ingresada por el usuario
+          passwordMatch = await bcrypt.compare(password, usuarioFind.password);
+        }
 
         // Si el usuario no existe o la contraseña no coincide se envia un mensaje de error
         if(!usuarioFind || !passwordMatch){
@@ -86,6 +89,7 @@ const usersController = {
               message:'las credenciales no son correctas'
            })
         }
+
         let payload = {
               ...usuarioFind
            }  
