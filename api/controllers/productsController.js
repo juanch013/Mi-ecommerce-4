@@ -17,6 +17,16 @@ const productsController = {
         let products = fileHelpers.getProducts(next);
         const {id} = req.params;
 
+        // let idParams = req.params.id
+        // let idQuery = req.query.id
+
+        // if(!idParams && !idQuery){
+        //     return
+        // }
+
+        // let id = idParams == undefined? idQuery : idParams
+
+
         for(prod of products){
             if(prod.id == id){
                 prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);

@@ -145,8 +145,64 @@ paths:
                     type: string
                   message:
                     type: string
-    
-    
+
+  /login:
+    post:
+      tags:
+        - users
+      summary: Realiza el login del usuario devolviendo el Json Web Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User logeado correctamente
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: authorized
+                  user:
+                    type: object
+                    properties:
+                      idUser:
+                        type: number
+                        example: 4
+                      username:
+                        type: string
+                        example: user1233
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJmZWxpcGVAZ21haWwuY29tIiwidXNlcm5hbWUiOiJmZWxpIiwicGFzc3dvcmQiOiIkMmIkMTAkd2gzYnBUbUFNOFpsQm42Q2VjbmxodUYxYlY3bHVkajIxUWNnMy9OLzhxNFpPTFZqazBnYXkiLCJmaXJzdG5hbWUiOiJGZWxpcGUiLCJsYXN0bmFtZSI6IlBhcmFkYSIsInByb2ZpbGVwaWMiOiIiLCJyb2xlIjoiZ29kIiwiaWF0IjoxNjYzMTc0NDAyLCJleHAiOjE2NjMzNDcyMDJ9.OAMB_2NndVt_TbjyaCA4QsHUl9PjxRfB6ByOhPjKytk
+      
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
 
   /users/:id:
     get:  
@@ -508,6 +564,8 @@ paths:
                       type: boolean
                     stock:
                       type: number
+
+
 
   /products/:id:
     get:
