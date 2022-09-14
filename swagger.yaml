@@ -17,6 +17,13 @@ tags:
     description: Todos los endpoints de usuarios
   - name: products
     description: Todos los endpoints de productos
+  - name: login 
+    description: Todos los endpoints de productos
+  - name: carito
+    description: Todos los endpoints de carito 
+  - name: pictures
+    description: Todos los endpoints de pictures
+
 
 components:
   securitySchemes:
@@ -26,6 +33,597 @@ components:
       bearerFormat: JWT
   
 paths:
+
+  /pictures?product=id:
+    get:
+      tags:
+          - pictures
+      summary: Retorna la lista de pictures del prroducto identificado con id 
+      responses:
+        '200':
+          description: lista de pictures 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                     type: number
+                    url:  
+                      type: string
+                    description:
+                      type: string  
+                    productId:
+                      type: number
+        '400':
+          description: Parametro de entrada no es correcto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                    example: El parametro de entrada no es correcto
+          
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:  
+                    type: string
+                  message:
+                    type: string
+                    example: Producto no encontrado
+        
+        '401':
+          description: No tiene autorizacion para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: No esta autorizado para acceder a este recurso
+
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                    
+
+      parameters:
+        - name: product
+          in: query
+          required: true
+          description: id del producto del que queremos obtener sus pictures
+          schema:
+            type: number
+
+  /pictures/:id:
+    put:
+      tags:
+        - pictures
+      summary: modifica la picture creada con la informacion recibida por body.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id de la picture
+          schema:
+            type: number
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - pictureUrl
+                - pictureDescription
+              properties:
+                pictureUrl:
+                  type: string
+                productDescription:
+                  type: string
+          
+      responses:
+        '200':
+          description: lista de pictures 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  url:  
+                    type: string
+                  description:
+                    type: string  
+                  productId:
+                    type: number
+
+        '400':
+          description: Parametro de entrada no es correcto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                    example: El parametro de entrada no es correcto
+          
+        '404':
+          description: Picture no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:  
+                    type: string
+                  message:
+                    type: string
+                    example: Producto no encontrado
+
+        '401':
+          description: No tiene autorizacion para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: No esta autorizado para acceder a este recurso
+
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+
+    get:
+      tags:
+          - pictures
+      summary: Retorna la picture con el id pasado por parametro 
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id de la picture
+          schema:
+            type: number
+
+      responses:
+        '200':
+          description: detalle de picture 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  url:  
+                    type: string
+                  description:
+                    type: string  
+                  productId:
+                    type: number
+        
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+        
+        '400':
+          description: Parametro de entrada no es correcto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                    example: El parametro de entrada no es correcto
+          
+        '404':
+          description: Picture no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:  
+                    type: string
+                  message:
+                    type: string
+                    example: Producto no encontrado
+
+        '401':
+          description: No tiene autorizacion para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: No esta autorizado para acceder a este recurso
+
+    delete:
+      tags:
+        - pictures
+      summary: Elimina la imagen con el id pasada por parametro
+      responses:
+        '200':
+          description: La imagen fue eliminada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  picture:
+                    type: object
+                    properties: 
+                      id:
+                        type: number
+                      url:
+                        type: string
+                      description: 
+                        type: string
+                      productId:
+                        type: number
+
+        '400':
+          description: Parametro de entrada no es correcto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                    example: El parametro de entrada no es correcto
+          
+        '404':
+          description: Picture no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:  
+                    type: string
+                  message:
+                    type: string
+                    example: Producto no encontrado
+
+        '401':
+          description: No tiene autorizacion para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: No esta autorizado para acceder a este recurso
+      
+      
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+
+  /pictures:
+    post:
+      tags:
+        - pictures
+      summary: Retorna la picture creada con l informacion recibida por body.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - pictureUrl
+                - pictureDescription
+                - productId
+              properties:
+                pictureUrl:
+                  type: string
+                productDescription:
+                  type: string
+                productId:
+                  type: number
+      responses:
+        '201':
+          description: Picture creada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  Url:
+                    type: string
+                  Description:
+                    type: string
+                  productId:
+                    type: number
+        
+        '400':
+          description: Parametro de entrada no es correcto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                    example: El parametro de entrada no es correcto
+
+        '401':
+          description: No tiene autorizacion para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: No esta autorizado para acceder a este recurso 
+
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+
+
+  /carts/:id:
+    get:
+      tags:
+        - cart
+      summary: Retorna el carrito del usuario seleccionado
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+          
+      responses:
+        '200':
+          description: lista de usuarios  
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    id:
+                      type: number
+                      example: 4
+                    quantity: 
+                      type: number
+                      example: 2
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Usuario no encontrado
+
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+
+    put:
+      tags:
+        - cart
+      summary: Modifica el carrito del usuario pasado por parametro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:  
+                type: object
+                required:
+                  - quantity
+                  - id
+                properties:
+                  quantity:
+                    type: number
+                  id:
+                    type: number 
+      responses:
+        '200':
+          description: Carrito actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Carrito actualizado
+                  cart:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        quantity:
+                          type: number
+                        id:
+                          type: number 
+
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Usuario no encontrado
+
+        '403':
+          description: Usuario sin permisos suficientes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Usuario no autorizado
+
+        '400':
+          description: Los parametros de entrada no son los esperados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Se precisan el id de producto y cantidad de ese producto
+
+  /login:
+    post:
+      tags:
+        - login
+      summary: Realiza el login del usuario devolviendo el Json Web Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User logeado correctamente
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: authorized
+                  user:
+                    type: object
+                    properties:
+                      idUser:
+                        type: number
+                        example: 4
+                      username:
+                        type: string
+                        example: user1233
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJmZWxpcGVAZ21haWwuY29tIiwidXNlcm5hbWUiOiJmZWxpIiwicGFzc3dvcmQiOiIkMmIkMTAkd2gzYnBUbUFNOFpsQm42Q2VjbmxodUYxYlY3bHVkajIxUWNnMy9OLzhxNFpPTFZqazBnYXkiLCJmaXJzdG5hbWUiOiJGZWxpcGUiLCJsYXN0bmFtZSI6IlBhcmFkYSIsInByb2ZpbGVwaWMiOiIiLCJyb2xlIjoiZ29kIiwiaWF0IjoxNjYzMTc0NDAyLCJleHAiOjE2NjMzNDcyMDJ9.OAMB_2NndVt_TbjyaCA4QsHUl9PjxRfB6ByOhPjKytk
+      
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+
+
   /users:
     get:
       tags:
@@ -145,8 +743,7 @@ paths:
                     type: string
                   message:
                     type: string
-
-  /login:
+  /users/login:
     post:
       tags:
         - users
@@ -203,6 +800,138 @@ paths:
                     type: string
                   message:
                     type: string
+
+  /users/:id/cart:
+    get:
+      tags:
+        - users
+      summary: Retorna el carrito del usuario seleccionado
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+          
+      responses:
+        '200':
+          description: lista de usuarios  
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    id:
+                      type: number
+                      example: 4
+                    quantity: 
+                      type: number
+                      example: 2
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Usuario no encontrado
+
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+
+    put:
+      tags:
+        - users
+      summary: Modifica el carrito del usuario pasado por parametro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:  
+                type: object
+                required:
+                  - quantity
+                  - id
+                properties:
+                  quantity:
+                    type: number
+                  id:
+                    type: number 
+      responses:
+        '200':
+          description: Carrito actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Carrito actualizado
+                  cart:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        quantity:
+                          type: number
+                        id:
+                          type: number 
+
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Usuario no encontrado
+
+        '403':
+          description: Usuario sin permisos suficientes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Usuario no autorizado
+
+        '400':
+          description: Los parametros de entrada no son los esperados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Se precisan el id de producto y cantidad de ese producto
+
 
   /users/:id:
     get:  
