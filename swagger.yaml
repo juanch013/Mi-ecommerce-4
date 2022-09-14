@@ -584,3 +584,66 @@ paths:
                             type: boolean
                           stock:
                             type: number
+  
+  /products/search:
+    get:
+      tags:
+        - products
+      responses:
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  msg:
+                    type: string
+                    example: Server Error
+              
+        '200':
+          description: Listado de productos 'mostwanted'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  msg:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          title:
+                            type: string
+                          price:
+                            type: number
+                          description:
+                            type: string
+                          gallery:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                url:
+                                  type: string
+                                descripcion:
+                                  type: string
+                                product_id:
+                                  type: number
+                          category:
+                            type: string
+                          mostwanted: 
+                            type: boolean
+                          stock:
+                            type: number
