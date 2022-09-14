@@ -60,19 +60,21 @@ const cartEdit = (req,res,next) => {
                 
                 const cart = user.cart;
                 cartUpdate.forEach(element => {
-                    if(!element.id || !element.quantity){
-                        return res.status(200).json({
-                            msg: 'Cada producto debe tener id y quantity.'
+                    if(!element.id || !element.quantity || isNaN(element.id) || isNaN(element.quantity)){
+                        //filesHandler.guardarUsers(users,res);
+                        return res.status(400).json({
+                            msg: 'Error: Cada producto debe tener id, quantity y ambos deben ser numeros.',
+                            cart
                         })
                     }
                     const aux = cart.find(el => el.id == element.id);
                     if(!aux){
                         cart.push(element);
                     }else{
-                        aux.quantity += element.quantity;
+                        aux.quantity += Number(element.quantity);
                     }
                     });
-                    filesHandler.guardarUsers(users,res);
+                    //filesHandler.guardarUsers(users,res);
                     return res.status(200).json({
                         msg: 'Carrito actualizado:',
                         cart
@@ -87,7 +89,7 @@ const cartEdit = (req,res,next) => {
             })
             } 
     }else{
-        return res.status(200).json({
+        return res.status(400).json({
             msg: 'Debe ingresar al menos un producto'
         })
     }
