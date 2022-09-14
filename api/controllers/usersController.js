@@ -92,5 +92,3 @@ const usersController = {
         
     },
 }
-
-
