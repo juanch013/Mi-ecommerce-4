@@ -1,18 +1,18 @@
+const bcrypt = require('bcrypt');
 const fileHelpers = require('../../helpers/filesHelpers');
 const {generateJWT} = require('../../helpers/generateJWT');
 
 const validateUserFilds = (userObject) => {
-    const {email, username, password, firstname, lastname, profilepic} = userObject;
-
+    const {email, username, password, firstname, lastname, profilepic, role} = userObject;
     if(typeof email     === 'string' && 
-       typeof username  === 'string' && 
-       typeof password  === 'string' && 
-       typeof firstname === 'string' && 
-       typeof lastname  === 'string' &&
-       typeof role      === 'string' &&
-      (typeof profilepic  === 'string' || typeof profilepic === 'undefined'))
+    typeof username  === 'string' && 
+    typeof password  === 'string' && 
+    typeof firstname === 'string' && 
+    typeof lastname  === 'string' &&
+    typeof role      === 'string' &&
+    (typeof profilepic  === 'string' || typeof profilepic === 'undefined'))
     {
-       return true;
+      return true;
     }
     return false;
 }
@@ -45,28 +45,42 @@ const usersController = {
 
     },
 
-    createUser: function(req, res,next) {
+    createUser: function(req, res, next) {
         const userFromRequest = req.body;
-        if(!validateUser(userFromRequest))
+        if(!validateUserFilds(userFromRequest))
         {
-            return res.status(400).json({"msg": "Bad request"})
+          return res.status(400).json({"msg": "Bad request"})
         }
-        
-        let users = fileHelpers.getUsers(next);
-        const idToAdd = users.length;
-        const userToAdd = {idToAdd, ...userFromRequest};
+        // Si usuario ya existe en la base de datos no se puede crear
+        const users = fileHelpers.getUsers(next);
+        const userExists = users.find((u) => u.username === userFromRequest.username);
+        if(userExists)
+        {
+            return res.status(400).json({"msg": "User already exists."});
+        }
+        // Se hashea la contraseña
+        const hash = bcrypt.hashSync(userFromRequest.password, 10);
+        // Se guarda la contrasena hasheada en el objeto
+        userFromRequest.password = hash;
+        // Se accede al id del ultimo usuario y se le suma 1
+        const id = users.at(-1).id + 1;
+        const userToAdd = {id, ...userFromRequest};
         users.push(userToAdd);
-        fileHelpers.guardarUsers(users,next);
+        fileHelpers.guardarUsers(users, next);
         return res.status(201).json(userToAdd);
     },
 
     login: async function(req, res, next) {
         const {username,password} = req.body;
- 
+
         let users = fileHelpers.getUsers(next);
-        let usuarioFind = users.find(u => u.username == username && u.password == password);
-     
-        if(!usuarioFind){
+        let usuarioFind = users.find(u => u.username == username);
+
+        // Se compara la contraseña hasheada con la contraseña ingresada por el usuario
+        const passwordMatch = bcrypt.compareSync(password, usuarioFind.password);
+
+        // Si el usuario no existe o la contraseña no coincide se envia un mensaje de error
+        if(!usuarioFind || !passwordMatch){
            return res.status(401).json({
               ok:false,
               message:'las credenciales no son correctas'
