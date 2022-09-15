@@ -710,6 +710,9 @@ paths:
                   type: string  
                 role:
                   type: string  
+                cart: 
+                  type: array
+                  example: []
       responses:
         '403':
           description: request invalida
