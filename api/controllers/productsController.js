@@ -2,15 +2,41 @@ const fileHelpers = require('../../helpers/filesHelpers');
 
 const productsController = {
     listar: (req, res, next)=>{
+        const {category} = req.query
         let products = fileHelpers.getProducts(next);
 
-        for(prod of products){
-            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res,next);
-        }
+        if(category){
 
-        return res.status(200).json({
-                    productos: products
+            products = products.filter((prod)=>{return (prod.category).toLowerCase() == (category).toLowerCase()});
+
+            if(products.length == 0){
+                return res.status(404).json({
+                    ok:false,
+                    msg: "No existen productos con esta categoria"
                 })
+            }
+
+            for(prod of products){
+                    prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
+            }
+
+            return res.status(200).json({
+                ok: true,
+                msg: "listado por categorias",
+                data: products
+            })
+            
+        }else{
+    
+            for(prod of products){
+                prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res,next);
+            }
+    
+            return res.status(200).json({
+                        productos: products
+                    })
+
+        }
     },
 
     detalle: (req, res, next)=>{
@@ -146,6 +172,8 @@ const productsController = {
     busqueda: (req, res, next)=>{
         let products = fileHelpers.getProducts(next);
         const q = req.query.q;
+        
+        console.log(q.toLowerCase());
 
         if(q == undefined){
             return res.status(400).json({
@@ -159,9 +187,10 @@ const productsController = {
         //aca recorro el array de productos y voy pusheando a 'productsFiltrados' los elementos
         //que contengan la keyword del query string
         products.forEach(element => {
-            if(element.description.includes(q) || element.title.includes(q)){
+            if(element.description.toLowerCase().includes(q.toLowerCase()) || element.title.toLowerCase().includes(q.toLowerCase
+              ())){
                 productsFiltrados.push(element);
-            }
+            } 
         });
 
         for(prod of productsFiltrados){
@@ -188,7 +217,22 @@ const productsController = {
         }
 
         const {title, description, price, gallery, category, mostwanted, stock} = req.body;
+
+
+        if(!title && !description && !price && !gallery && !category && !mostwanted && !stock){
+            return res.status(400).json({
+                msg:"Request invalida, Debe modificar por lo menos una propiedad del producto"
+            })
+        }
+
         let products = fileHelpers.getProducts(next);
+
+        if(!products.some((prod)=>{return prod.id == id})){
+            return res.status(404).json({
+                msg:`No existe producto con id=${id}`
+            })
+        }
+
         let prodModificado = {};
 
         for(prod of products){
@@ -212,8 +256,87 @@ const productsController = {
             msg:`Se modifico exitosamente el producto Nro${id}`,
             data:prodModificado
         })
-    }
+    },
 
+    pictures: (req, res, next) => {
+      try {
+        const { id } = req.params;
+
+        if (
+          req.newUsers.role !== 'admin' &&
+          req.newUsers.role !== 'guest' &&
+          req.newUsers.role !== 'god'
+        ) {
+          return res.status(401).json({ 
+            message: 'You are not authorized to access this resource',
+          });
+        }
+    
+        if (!id) {
+          return res.status(400).json({ error: 'Id is required', message: '' });
+        }
+    
+        if (isNaN(id)) {
+          return res
+            .status(400)
+            .json({ error: 'Id must be a number', message: '' });
+        }
+    
+        const products = fileHelpers.getProducts(res, next);
+    
+        const productExists = products.find(
+          (product) => product.id === parseInt(id)
+        );
+        if (!productExists) {
+          return res.status(404).json({ error: 'Product not found', message: '' });
+        }
+    
+        // Se lee el arhivo de pictures
+        const pictures = fileHelpers.getImages(next);
+    
+        const picturesProduct = pictures?.filter(
+          (picture) => picture.productId === parseInt(id)
+        );
+    
+        if (!picturesProduct.length) {
+          return res
+            .status(404)
+            .json({ error: 'The product does not have images', message: '' });
+        }
+    
+        res.status(200).json(picturesProduct);
+      } catch (error) {
+        next(error);
+      }
+    },
+
+    categoria: (req, res, next)=>{
+
+        let products = fileHelpers.getProducts(next);
+        const {category} = req.query;
+        
+
+        products = products.filter((prod)=>{return prod.category == category});
+
+        if(products.length == 0){
+            return res.status(404).json({
+                ok:false,
+                msg: "No existen productos con esta categoria"
+            })
+        }
+
+        for(prod of products){
+                prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
+        }
+
+        return res.status(200).json({
+            ok: true,
+            msg: "listado por categorias",
+            data: products
+        })
+
+        
+    },
 }
 
 module.exports = productsController;
