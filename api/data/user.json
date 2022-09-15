@@ -64,5 +64,16 @@
 		"profilepic": "",
 		"role": "admin",
 		"cart": [{ "id": "1", "quantity": 40 }]
+	},
+	{
+		"userId": 8,
+		"email": "margarita@gmail.com",
+		"password": "$2b$10$mgY9wENtbJqrOyOc8z8j3O.1iXv8XYIDC.Il8lb2yDhm2xRQ.xE36",
+		"username": "margaret",
+		"firstname": "Margarita",
+		"lastname": "Cardoso",
+		"profilepic": "",
+		"role": "god",
+		"cart": []
 	}
 ]
