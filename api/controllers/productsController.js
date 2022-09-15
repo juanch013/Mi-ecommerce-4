@@ -189,6 +189,14 @@ const productsController = {
         }
 
         const {title, description, price, gallery, category, mostwanted, stock} = req.body;
+
+
+        if(!title && !description && !price && !gallery && !category && !mostwanted && !stock){
+            return res.status(400).json({
+                msg:"Request invalida, Debe modificar por lo menos una propiedad del producto"
+            })
+        }
+
         let products = fileHelpers.getProducts(next);
         let prodModificado = {};
 
