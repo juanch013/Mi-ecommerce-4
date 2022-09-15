@@ -1633,7 +1633,7 @@ paths:
                     example: false
                   msg:
                     type: string
-                    example: Producto no encontrado
+                    example: no existe el producto con id=4
 
         '400':  
           description: Request invalida

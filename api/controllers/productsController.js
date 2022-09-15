@@ -226,6 +226,13 @@ const productsController = {
         }
 
         let products = fileHelpers.getProducts(next);
+
+        if(!products.some((prod)=>{return prod.id == id})){
+            return res.status(404).json({
+                msg:`No existe producto con id=${id}`
+            })
+        }
+
         let prodModificado = {};
 
         for(prod of products){
