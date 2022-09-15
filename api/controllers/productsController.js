@@ -1,6 +1,7 @@
 const fileHelpers = require('../../helpers/filesHelpers');
 
 const productsController = {
+
     listar: (req, res, next)=>{
         const {category} = req.query
         let products = fileHelpers.getProducts(next);
@@ -94,6 +95,13 @@ const productsController = {
             return res.status(401).json({
                 ok: false,
                 msg:'No tiene permisos suficientes'
+            })
+        }
+
+        if(stock < 0 ){
+            return res.status(401).json({
+                ok: false,
+                msg:'El stock debe ser mayor o igual a cero'
             })
         }
 
@@ -218,6 +226,13 @@ const productsController = {
 
         const {title, description, price, gallery, category, mostwanted, stock} = req.body;
 
+        if(stock < 0){
+            return res.status(400).json({
+                ok:false,
+                msg:"El stock no puede ser menor a cero"
+            })
+        }
+
 
         if(!title && !description && !price && !gallery && !category && !mostwanted && !stock){
             return res.status(400).json({
@@ -337,6 +352,7 @@ const productsController = {
 
         
     },
+
 }
 
 module.exports = productsController;
