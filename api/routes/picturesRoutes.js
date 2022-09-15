@@ -6,17 +6,38 @@ const {
 	updatePicture,
 	deletePicture,
 } = require('../controllers/picturesController');
+const {
+	getProductPicturesSchema,
+	byIdSchema,
+	createSchema,
+	updateSchema,
+} = require('../schemas/picturesSchema');
 
+// Middlewares
 const { verifyJWT } = require('../middlewares/verifyJWT');
+const validatorHandler = require('../middlewares/validatorHandler');
 
 const router = express.Router();
 
-router.get('/', verifyJWT, getPictures);
-router.post('/', verifyJWT, createPicture);
-router.put('/:id', verifyJWT, updatePicture);
-router.delete('/:id', verifyJWT, deletePicture);
-router.get('/:id', verifyJWT, getPicture);
-//Alias /products/:id/pictures
-// router.get('/products/:id/pictures', getPictures);
+router.use(verifyJWT);
+
+router.get(
+	'/',
+	validatorHandler(getProductPicturesSchema, 'query'),
+	getPictures
+);
+
+router.get('/:id', validatorHandler(byIdSchema, 'params'), getPicture);
+
+router.post('/', validatorHandler(createSchema, 'body'), createPicture);
+
+router.put(
+	'/:id',
+	validatorHandler(byIdSchema, 'params'),
+	validatorHandler(updateSchema, 'body'),
+	updatePicture
+);
+
+router.delete('/:id', validatorHandler(byIdSchema, 'params'), deletePicture);
 
 module.exports = router;

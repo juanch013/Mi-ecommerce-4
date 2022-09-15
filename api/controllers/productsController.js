@@ -17,6 +17,16 @@ const productsController = {
         let products = fileHelpers.getProducts(next);
         const {id} = req.params;
 
+        // let idParams = req.params.id
+        // let idQuery = req.query.id
+
+        // if(!idParams && !idQuery){
+        //     return
+        // }
+
+        // let id = idParams == undefined? idQuery : idParams
+
+
         for(prod of products){
             if(prod.id == id){
                 prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
@@ -149,9 +159,10 @@ const productsController = {
         //aca recorro el array de productos y voy pusheando a 'productsFiltrados' los elementos
         //que contengan la keyword del query string
         products.forEach(element => {
-            if(element.description.includes(q) || element.title.includes(q)){
+            if(element.description.toLowerCase().includes(q.toLowerCase()) || element.title.toLowerCase().includes(q.toLowerCase
+              ())){
                 productsFiltrados.push(element);
-            }
+            } 
         });
 
         for(prod of productsFiltrados){
@@ -178,12 +189,11 @@ const productsController = {
         }
 
         const {title, description, price, gallery, category, mostwanted, stock} = req.body;
-        let products = fileHelpers.getProducts();
+        let products = fileHelpers.getProducts(next);
         let prodModificado = {};
 
         for(prod of products){
             if(prod.id == id){
-                prodModificado = prod;
                 prod.title = title == undefined || title == "" ? prod.title : title;
                 prod.description = description == undefined || description == "" ? prod.description : description;
                 prod.price = price == undefined? prod.price : price;
@@ -191,18 +201,71 @@ const productsController = {
                 prod.mostwanted = mostwanted == undefined? prod.mostwanted : mostwanted;
                 prod.category = category == undefined? prod.undefined : undefined;
                 prod.gallery = gallery == undefined? prod.gallery : gallery;
-
+                prodModificado = prod;
                 break;
             }
         }
+        
+        fileHelpers.guardarProducts(products, next);
 
         return res.status(200).json({
             ok:true,
             msg:`Se modifico exitosamente el producto Nro${id}`,
-            data:prod
+            data:prodModificado
         })
-    }
+    },
 
+    pictures: (req, res, next) => {
+      try {
+        const { id } = req.params;
+
+        if (
+          req.newUsers.role !== 'admin' &&
+          req.newUsers.role !== 'guest' &&
+          req.newUsers.role !== 'god'
+        ) {
+          return res.status(401).json({ 
+            message: 'You are not authorized to access this resource',
+          });
+        }
+    
+        if (!id) {
+          return res.status(400).json({ error: 'Id is required', message: '' });
+        }
+    
+        if (isNaN(id)) {
+          return res
+            .status(400)
+            .json({ error: 'Id must be a number', message: '' });
+        }
+    
+        const products = fileHelpers.getProducts(res, next);
+    
+        const productExists = products.find(
+          (product) => product.id === parseInt(id)
+        );
+        if (!productExists) {
+          return res.status(404).json({ error: 'Product not found', message: '' });
+        }
+    
+        // Se lee el arhivo de pictures
+        const pictures = fileHelpers.getImages(next);
+    
+        const picturesProduct = pictures?.filter(
+          (picture) => picture.productId === parseInt(id)
+        );
+    
+        if (!picturesProduct.length) {
+          return res
+            .status(404)
+            .json({ error: 'The product does not have images', message: '' });
+        }
+    
+        res.status(200).json(picturesProduct);
+      } catch (error) {
+        next(error);
+      }
+    },
 }
 
 module.exports = productsController;
