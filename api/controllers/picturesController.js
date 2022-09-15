@@ -215,4 +215,5 @@ module.exports = {
 	createPicture,
 	updatePicture,
 	deletePicture,
+
 };
