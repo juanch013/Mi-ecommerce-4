@@ -148,7 +148,7 @@ const usersController = {
         // Se hashea la contraseña
         userFromRequest.password = bcrypt.hashSync(userFromRequest.password, 10);
         
-        users[userIndex] = {userId, ...userFromRequest};
+        users[userIndex] = {id: userId, ...userFromRequest};
         fileHelpers.guardarUsers(users, next);
         return res.status(200).json(getUserWithoutPassword(userFromRequest));
     },
