@@ -57,11 +57,10 @@ const cartEdit = (req,res,next) => {
                         msg: 'Id de usuario no encontrado.'
                     })
                 }
-                
                 const cart = user.cart;
                 cartUpdate.forEach(element => {
                     if(!element.id || !element.quantity || isNaN(element.id) || isNaN(element.quantity)){
-                        //filesHandler.guardarUsers(users,res);
+                        filesHandler.guardarUsers(users,res);
                         return res.status(400).json({
                             msg: 'Error: Cada producto debe tener id, quantity y ambos deben ser numeros.',
                             cart
@@ -74,12 +73,11 @@ const cartEdit = (req,res,next) => {
                         aux.quantity += Number(element.quantity);
                     }
                     });
-                    //filesHandler.guardarUsers(users,res);
+                    filesHandler.guardarUsers(users,next);
                     return res.status(200).json({
                         msg: 'Carrito actualizado:',
                         cart
                     })
-                
             } catch (error) {
                 next(error);
             }
