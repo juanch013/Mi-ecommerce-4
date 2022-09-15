@@ -6,7 +6,7 @@ const { verifyJWT } = require('../middlewares/verifyJWT');
 
 router.use(verifyJWT);
 
-router.get('/', productsController.listar);
+router.get('/',productsController.listar);
 
 router.get('/mostwanted', productsController.mostwanted);
 
@@ -23,3 +23,4 @@ router.delete('/:id', productsController.eliminar);
 router.put('/:id', productsController.modificar);
 
 module.exports = router;
+ 

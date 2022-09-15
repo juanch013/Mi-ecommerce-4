@@ -654,6 +654,7 @@ paths:
                       type: string
                     role:
                       type: string
+
         '500':
           description: Server Error
           content:
@@ -665,6 +666,17 @@ paths:
                     type: string
                   message:
                     type: string
+
+        '403':
+          description: request invalida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    example: Not authorized                
 
     post:
       tags:
@@ -699,6 +711,16 @@ paths:
                 role:
                   type: string  
       responses:
+        '403':
+          description: request invalida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    example: Not authorized 
         '201':
           description: usuario agregado
           content:
@@ -989,6 +1011,16 @@ paths:
                     type: string
                   message:
                     type: string
+        '403':
+          description: request invalida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    example: Not authorized   
     put:
       tags:
         - users
@@ -1025,6 +1057,16 @@ paths:
                   type: array
                   example: []
       responses:
+        '403':
+          description: request invalida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    example: Not authorized 
         '200':
           description: usuario modificado
           content:
@@ -1090,7 +1132,27 @@ paths:
           schema:
             type: number
       responses:
-        # '400':
+        '400':
+          description: Parametro incorrecto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    example: Bad request, User id must be a number
+
+        '403':
+          description: request invalida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    example: Not authorized 
 
         '200':
           description: usuario eliminado
@@ -1140,7 +1202,7 @@ paths:
    get:
     tags:
       - products
-    summary: Retorna la lista de productos del sistema
+    summary: Retorna la lista de productos del sistema, si se pasa el parametro category por query , devuelve los producto registados con la categoria pasada por parametro
     responses:
       '500':
         description: Internal error
@@ -1198,6 +1260,15 @@ paths:
                           type: boolean
                         stock:
                           type: number
+
+    parameters:
+      - name: category
+        in: query
+        required: false
+        description: categoria para filtrar
+        schema:
+          type: string
+
 
    post:
     tags:

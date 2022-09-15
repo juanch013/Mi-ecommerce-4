@@ -2,15 +2,41 @@ const fileHelpers = require('../../helpers/filesHelpers');
 
 const productsController = {
     listar: (req, res, next)=>{
+        const {category} = req.query
         let products = fileHelpers.getProducts(next);
 
-        for(prod of products){
-            prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res,next);
-        }
+        if(category){
 
-        return res.status(200).json({
-                    productos: products
+            products = products.filter((prod)=>{return (prod.category).toLowerCase() == (category).toLowerCase()});
+
+            if(products.length == 0){
+                return res.status(404).json({
+                    ok:false,
+                    msg: "No existen productos con esta categoria"
                 })
+            }
+
+            for(prod of products){
+                    prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
+            }
+
+            return res.status(200).json({
+                ok: true,
+                msg: "listado por categorias",
+                data: products
+            })
+            
+        }else{
+    
+            for(prod of products){
+                prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,res,next);
+            }
+    
+            return res.status(200).json({
+                        productos: products
+                    })
+
+        }
     },
 
     detalle: (req, res, next)=>{
@@ -146,6 +172,8 @@ const productsController = {
     busqueda: (req, res, next)=>{
         let products = fileHelpers.getProducts(next);
         const q = req.query.q;
+        
+        console.log(q.toLowerCase());
 
         if(q == undefined){
             return res.status(400).json({
@@ -273,6 +301,34 @@ const productsController = {
       } catch (error) {
         next(error);
       }
+    },
+
+    categoria: (req, res, next)=>{
+
+        let products = fileHelpers.getProducts(next);
+        const {category} = req.query;
+        
+
+        products = products.filter((prod)=>{return prod.category == category});
+
+        if(products.length == 0){
+            return res.status(404).json({
+                ok:false,
+                msg: "No existen productos con esta categoria"
+            })
+        }
+
+        for(prod of products){
+                prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
+        }
+
+        return res.status(200).json({
+            ok: true,
+            msg: "listado por categorias",
+            data: products
+        })
+
+        
     },
 }
 
