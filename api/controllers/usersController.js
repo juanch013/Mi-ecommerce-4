@@ -10,6 +10,7 @@ const validateUserFields = (userObject) => {
         const validFields = ["email", "username", "password", "firstname", "lastname", "profilepic", "role", "cart"];
         if(!validFields.includes(key)){foundInvalidField = true;}
     });
+
     const {email, username, password, firstname, lastname, profilepic, role, cart} = userObject;
     return (!foundInvalidField &&
             typeof email === 'string' && 
@@ -53,6 +54,10 @@ const usersController = {
     getUser: function(req, res, next) {
         const users = fileHelpers.getUsers(next);
         const userId = Number(req.params.id);
+
+        if(Number(userId) < 0){
+            return res.status(400).json({"msg": "Bad request: User id must be a number"});
+        }
 
         if(isNaN(userId)) {return res.status(400).json({"msg": "Bad request: User id must be a number"});}
 
