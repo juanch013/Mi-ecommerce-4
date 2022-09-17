@@ -4,6 +4,7 @@ const {
 	getImages,
 	guardarPictures,
 } = require('../../helpers/filesHelpers');
+const responses = require('../network/responses');
 
 // /pictures?product=id
 // Acción: Recupera la lista de pictures del product identificado con id. Responde con un array conteniendo las pictures.
@@ -108,7 +109,8 @@ const createPicture = (req, res, next) => {
 		);
 
 		if (!product) {
-			return res.status(404).json({ error: 'Product not found', message: '' });
+      return responses(res, 404, 'Product not found', undefined, '');
+			// return res.status(404).json({ error: 'Product not found', message: '' });
 		}
 
 		// Se traen las pictures del archivo
@@ -129,7 +131,8 @@ const createPicture = (req, res, next) => {
 		// Se escribe en el archivo la nueva picture
 		guardarPictures(pictures, next);
 
-		res.status(201).json(newPicture);
+    
+    responses(res, 201, '', 'Producto creado correctamente', newPicture)
 	} catch (error) {
 		next(error);
 	}
