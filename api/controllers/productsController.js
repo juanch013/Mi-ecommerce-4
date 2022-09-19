@@ -1,6 +1,7 @@
 const fileHelpers = require('../../helpers/filesHelpers');
 
 const productsController = {
+
     listar: (req, res, next)=>{
         const {category} = req.query
         let products = fileHelpers.getProducts(next);
@@ -11,7 +12,7 @@ const productsController = {
 
             if(products.length == 0){
                 return res.status(404).json({
-                    ok:false,
+                    error:true,
                     msg: "No existen productos con esta categoria"
                 })
             }
@@ -21,7 +22,7 @@ const productsController = {
             }
 
             return res.status(200).json({
-                ok: true,
+                error: false,
                 msg: "listado por categorias",
                 data: products
             })
@@ -33,6 +34,8 @@ const productsController = {
             }
     
             return res.status(200).json({
+                        error:false,
+                        msg: "listado de productos",
                         productos: products
                     })
 
@@ -43,30 +46,20 @@ const productsController = {
         let products = fileHelpers.getProducts(next);
         const {id} = req.params;
 
-        // let idParams = req.params.id
-        // let idQuery = req.query.id
-
-        // if(!idParams && !idQuery){
-        //     return
-        // }
-
-        // let id = idParams == undefined? idQuery : idParams
-
-
         for(prod of products){
             if(prod.id == id){
                 prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
                 return res.status(200).json({
-                    ok: true,
-                    msg: "ok",
+                    error: false,
+                    msg: "Detalle de producto",
                     data: prod
                 })
             }
         }
 
         return res.status(404).json({
-            ok:false,
-            msg: "Product not found"
+            error: true,
+            msg: "Producto no encontrado"
         })
     },
 
@@ -81,7 +74,9 @@ const productsController = {
         }
 
         return res.status(200).json({
-                    filteredProducts
+                    error: false,
+                    msg: "Productos mostwanted",
+                    data: filteredProducts
                 })
     },
 
@@ -92,8 +87,15 @@ const productsController = {
         
         if(rol == "guest"){
             return res.status(401).json({
-                ok: false,
+                error: true,
                 msg:'No tiene permisos suficientes'
+            })
+        }
+
+        if(stock < 0 ){
+            return res.status(401).json({
+                error: true,
+                msg:'El stock debe ser mayor o igual a cero'
             })
         }
 
@@ -118,27 +120,27 @@ const productsController = {
         fileHelpers.guardarProducts(products,next);
 
         return res.status(201).json({
-            ok:true,
+            error:false,
             msg:'creado correctamente',
             data: newProduct
         })
 
     },
-
+//---------------------------------
     eliminar: (req, res, next)=>{
         const {id} = req.params;
         const rol = req.newUsers.role;
         
         if(rol == "guest"){
             return res.status(401).json({
-                ok: false,
+                error: true,
                 msg:'No tiene permisos suficientes'
             })
         }
 
         if(id == undefined){
             return res.status(400).json({
-                ok: false,
+                error: true,
                 msg:'Bad request'
             })
         }
@@ -147,7 +149,7 @@ const productsController = {
 
         if(!products.some((p)=>{ return p.id == id})){
             return res.status(404).json({
-                ok:false,
+                error: true,
                 msg:"Product not found"
             })
         }
@@ -217,6 +219,13 @@ const productsController = {
         }
 
         const {title, description, price, gallery, category, mostwanted, stock} = req.body;
+
+        if(stock < 0){
+            return res.status(400).json({
+                ok:false,
+                msg:"El stock no puede ser menor a cero"
+            })
+        }
 
 
         if(!title && !description && !price && !gallery && !category && !mostwanted && !stock){
@@ -337,6 +346,7 @@ const productsController = {
 
         
     },
+
 }
 
 module.exports = productsController;
