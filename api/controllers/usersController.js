@@ -48,7 +48,10 @@ const usersController = {
         const usersWithoutPassword = users.map((user) => {
              return getUserWithoutPassword(user);
         })
-        res.status(200).send(usersWithoutPassword);
+        res.status(200).send({
+            error: false,
+            msg:"Listado de usuarios",
+            data: usersWithoutPassword});
     }, 
 
     getUser: function(req, res, next) {
@@ -56,17 +59,26 @@ const usersController = {
         const userId = Number(req.params.id);
 
         if(Number(userId) < 0){
-            return res.status(400).json({"msg": "Bad request: User id must be a number"});
+            return res.status(400).json({
+                error: true,
+                msg: "Bad request: User id must be a number"});
         }
 
-        if(isNaN(userId)) {return res.status(400).json({"msg": "Bad request: User id must be a number"});}
+        if(isNaN(userId)) {return res.status(400).json({
+            error: true,
+            msg: "Bad request: User id must be a number"});}
 
         //Searches for userIndex. If userIndex === -1 means user wasn't found.
         const userIndex = findUserById(users, userId);
-        if(userIndex < 0) {return res.status(404).json({"msg": "User does not exists."})}
+        if(userIndex < 0) {return res.status(404).json({
+            error: true,
+            msg: "User does not exists."})}
 
         const userWithoutPassword = getUserWithoutPassword(users[userIndex])
-        return res.status(200).json(userWithoutPassword);
+        return res.status(200).json({
+            error: false,
+            msg:"Detalle de usuario",
+            data:userWithoutPassword});
 
     },
 
@@ -74,11 +86,13 @@ const usersController = {
         const userFromRequest = req.body;
         const users = fileHelpers.getUsers(next);
 
-        if(!validateUserFields(userFromRequest)) {return res.status(400).json({"msg": "Bad request"})}
+        if(!validateUserFields(userFromRequest)) {return res.status(400).json({
+            error: true,
+            msg: "Bad request"})}
 
         // Si usuario ya existe en la base de datos no se puede crear
         const userExists = users.find((u) => u.username === userFromRequest.username);
-        if(userExists) {return res.status(400).json({"msg": "User already exists."});}
+        if(userExists) {return res.status(400).json({error:true, msg: "User already exists."});}
 
         // Se hashea la contraseña
         const hash = bcrypt.hashSync(userFromRequest.password, 10);
@@ -92,7 +106,7 @@ const usersController = {
         users.push(userToAdd);
 
         fileHelpers.guardarUsers(users, next);
-        return res.status(201).json(getUserWithoutPassword(userToAdd));
+        return res.status(201).json({error:false , msg: "Usuario creado correctamente", data:getUserWithoutPassword(userToAdd)});
     },
 
     login: async function(req, res, next) {
@@ -110,8 +124,8 @@ const usersController = {
         // Si el usuario no existe o la contraseña no coincide se envia un mensaje de error
         if(!usuarioFind || !passwordMatch){
            return res.status(401).json({
-              ok:false,
-              message:'las credenciales no son correctas'
+              error:true,
+              msg:'las credenciales no son correctas'
            })
         }
 
@@ -124,9 +138,9 @@ const usersController = {
         const token = await generateJWT(payload);
 
         return res.status(200).json({
-            success:true,
-            message:"authorized",
-            user:{
+            error:false,
+            msg:"authorized",
+            data:{
                 idUser: usuarioFind.id,
                 username: usuarioFind.username
             },
@@ -140,33 +154,33 @@ const usersController = {
         const userFromRequest = req.body;
         const userId = Number(req.params.id);
 
-        if(isNaN(userId)) {return res.status(400).json({"msg": "Bad request: User id must be a number"})}
+        if(isNaN(userId)) {return res.status(400).json({error: true, msg: "Bad request: User id must be a number"})}
 
         //Searches for userIndex. If userIndex === -1 means user wasn't found.
         const userIndex = findUserById(users, userId);
         if(userIndex < 0)
         {
-            return res.status(404).json({"msg": "User does not exists."})
+            return res.status(404).json({error: true, msg: "User does not exists."})
         }
         //Validates data
-        if(!validateUserFields(userFromRequest)) {return res.status(400).json({"msg": "Bad request"});}
+        if(!validateUserFields(userFromRequest)) {return res.status(400).json({error: true, msg: "Bad request"});}
         // Se hashea la contraseña
         userFromRequest.password = bcrypt.hashSync(userFromRequest.password, 10);
         
         users[userIndex] = {id: userId, ...userFromRequest};
         fileHelpers.guardarUsers(users, next);
-        return res.status(200).json(getUserWithoutPassword(userFromRequest));
+        return res.status(200).json({error: false, msg:"Usuario actualizado",data:getUserWithoutPassword(userFromRequest)});
     },
 
     deleteUser: function(req, res,next) {
         let users = fileHelpers.getUsers(next);
         const userId = Number(req.params.id);
 
-        if(isNaN(userId)) {return res.status(400).json({"msg": "Bad request: User id must be a number"});}
+        if(isNaN(userId)) {return res.status(400).json({error:true , msg: "Bad request: User id must be a number"});}
 
         //Searches for userIndex. If userIndex === -1 means user wasn't found.
         const userIndex = findUserById(users, userId);
-        if(userIndex < 0) {return res.status(404).json({"msg": "User does not exists."});}
+        if(userIndex < 0) {return res.status(404).json({error: true, msg: "User does not exists."});}
 
         //Shifts elements back from element to delete to end and pops last element
         const userToDelete = users[userIndex];
@@ -177,7 +191,7 @@ const usersController = {
         users.pop();
 
         fileHelpers.guardarUsers(users, next);
-        return res.status(200).json(getUserWithoutPassword(userToDelete));
+        return res.status(200).json({error: false, msg:"usuario borrado correctamente",data: getUserWithoutPassword(userToDelete)});
     }
 }
 

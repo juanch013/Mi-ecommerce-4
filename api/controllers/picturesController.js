@@ -21,7 +21,8 @@ const getPictures = (req, res, next) => {
 			req.newUsers.role !== 'god'
 		) {
 			return res.status(401).json({ 
-				message: 'You are not authorized to access this resource',
+				error: true,
+				msg: 'You are not authorized to access this resource',
 			});
 		}
 
@@ -31,7 +32,10 @@ const getPictures = (req, res, next) => {
 			(product) => product.id === parseInt(productId)
 		);
 		if (!productExists) {
-			return res.status(404).json({ error: 'Product not found', message: '' });
+			return res.status(404).json({ 
+				error: true,
+				msg: 'Product not found' 
+			});
 		}
 
 		// Se lee el arhivo de pictures
@@ -45,10 +49,15 @@ const getPictures = (req, res, next) => {
 		if (!picturesProduct.length) {
 			return res
 				.status(404)
-				.json({ error: 'The product does not have images', message: '' });
+				.json({ 
+					error: true,
+					 msg: 'The product does not have images' });
 		}
 
-		res.status(200).json(picturesProduct);
+		res.status(200).json({
+			error: false,
+			msg: "Listado de imagenes",
+			data: picturesProduct});
 	} catch (error) {
 		next(error);
 	}
@@ -67,7 +76,8 @@ const getPicture = (req, res, next) => {
 			req.newUsers.role !== 'god'
 		) {
 			return res.status(401).json({
-				message: 'You are not authorized to access this resource',
+				error: true,
+				msg: 'You are not authorized to access this resource',
 			});
 		}
 
@@ -78,10 +88,13 @@ const getPicture = (req, res, next) => {
 		);
 
 		if (!picture) {
-			return res.status(404).json({ error: 'Picture not found', message: '' });
+			return res.status(404).json({ error:true , msg: 'Picture not found' });
 		}
 
-		res.status(200).json(picture);
+		res.status(200).json({
+			error: false,
+			msg:"listado de imagenes",
+			data: picture});
 	} catch (error) {
 		next(error);
 	}
@@ -97,7 +110,8 @@ const createPicture = (req, res, next) => {
 
 		if (req.newUsers.role !== 'admin' && req.newUsers.role !== 'god') {
 			return res.status(401).json({
-				message: 'You are not authorized to access this resource',
+				error: true,
+				msg: 'You are not authorized to access this resource',
 			});
 		}
 
@@ -109,8 +123,7 @@ const createPicture = (req, res, next) => {
 		);
 
 		if (!product) {
-      return responses(res, 404, 'Product not found', undefined, '');
-			// return res.status(404).json({ error: 'Product not found', message: '' });
+			return res.status(404).json({ error:true , msg: 'Product not found' });
 		}
 
 		// Se traen las pictures del archivo
@@ -131,8 +144,10 @@ const createPicture = (req, res, next) => {
 		// Se escribe en el archivo la nueva picture
 		guardarPictures(pictures, next);
 
-    
-    responses(res, 201, '', 'Producto creado correctamente', newPicture)
+		res.status(201).json({
+			error: false,
+			msg:"Imagen agregada correctamente",
+			data:newPicture});
 	} catch (error) {
 		next(error);
 	}
@@ -150,7 +165,8 @@ const updatePicture = (req, res, next) => {
 
 		if (req.newUsers.role !== 'admin' && req.newUsers.role !== 'god') {
 			return res.status(401).json({
-				message: 'You are not authorized to access this resource',
+				error: true,
+				msg: 'You are not authorized to access this resource',
 			});
 		}
 		const pictures = getImages(next);
@@ -160,7 +176,7 @@ const updatePicture = (req, res, next) => {
 		);
 
 		if (!picture) {
-			return res.status(404).json({ error: 'Picture not found', message: '' });
+			return res.status(404).json({ error: true, msg: 'Picture not found' });
 		}
 
 		picture.url = pictureUrl;
@@ -169,7 +185,10 @@ const updatePicture = (req, res, next) => {
 		// Se escribe en el archivo la nueva picture
 		guardarPictures(pictures, next);
 
-		res.status(200).json(picture);
+		res.status(200).json({
+			error: false,
+			msg:"imagen actualizada",
+			data: picture});
 	} catch (error) {
 		next(error);
 	}
@@ -185,8 +204,8 @@ const deletePicture = (req, res, next) => {
 
 		if (req.newUsers.role !== 'admin' && req.newUsers.role !== 'god') {
 			return res.status(401).json({
-				auth: false,
-				message: 'You are not authorized to access this resource',
+				error: true,
+				msg: 'You are not authorized to access this resource',
 			});
 		}
 
@@ -197,7 +216,7 @@ const deletePicture = (req, res, next) => {
 		);
 
 		if (!picture) {
-			return res.status(404).json({ error: 'Picture not found', message: '' });
+			return res.status(404).json({ error:true , msg: 'Picture not found' });
 		}
 
 		const index = pictures.indexOf(picture);
@@ -206,7 +225,7 @@ const deletePicture = (req, res, next) => {
 		// Se borra la picture del archivo
 		guardarPictures(pictures, next);
 
-		res.status(200).json({ message: 'Picture deleted', picture: picture });
+		res.status(200).json({ error: false, msg: 'Picture deleted', data: picture });
 	} catch (error) {
 		next(error);
 	}
