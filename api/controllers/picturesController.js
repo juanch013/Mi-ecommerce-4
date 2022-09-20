@@ -20,7 +20,7 @@ const getPictures = (req, res, next) => {
 			req.newUsers.role !== 'guest' &&
 			req.newUsers.role !== 'god'
 		) {
-			return res.status(401).json({ 
+			return res.status(401).json({
 				error: true,
 				msg: 'You are not authorized to access this resource',
 			});
@@ -32,9 +32,9 @@ const getPictures = (req, res, next) => {
 			(product) => product.id === parseInt(productId)
 		);
 		if (!productExists) {
-			return res.status(404).json({ 
+			return res.status(404).json({
 				error: true,
-				msg: 'Product not found' 
+				msg: 'Product not found',
 			});
 		}
 
@@ -47,17 +47,17 @@ const getPictures = (req, res, next) => {
 		);
 
 		if (!picturesProduct.length) {
-			return res
-				.status(404)
-				.json({ 
-					error: true,
-					 msg: 'The product does not have images' });
+			return res.status(404).json({
+				error: true,
+				msg: 'The product does not have images',
+			});
 		}
 
 		res.status(200).json({
 			error: false,
-			msg: "Listado de imagenes",
-			data: picturesProduct});
+			msg: 'Listado de imagenes',
+			data: picturesProduct,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -88,13 +88,14 @@ const getPicture = (req, res, next) => {
 		);
 
 		if (!picture) {
-			return res.status(404).json({ error:true , msg: 'Picture not found' });
+			return res.status(404).json({ error: true, msg: 'Picture not found' });
 		}
 
 		res.status(200).json({
 			error: false,
-			msg:"listado de imagenes",
-			data: picture});
+			msg: 'listado de imagenes',
+			data: picture,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -123,7 +124,7 @@ const createPicture = (req, res, next) => {
 		);
 
 		if (!product) {
-			return res.status(404).json({ error:true , msg: 'Product not found' });
+			return res.status(404).json({ error: true, msg: 'Product not found' });
 		}
 
 		// Se traen las pictures del archivo
@@ -146,8 +147,9 @@ const createPicture = (req, res, next) => {
 
 		res.status(201).json({
 			error: false,
-			msg:"Imagen agregada correctamente",
-			data:newPicture});
+			msg: 'Imagen agregada correctamente',
+			data: newPicture,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -187,8 +189,9 @@ const updatePicture = (req, res, next) => {
 
 		res.status(200).json({
 			error: false,
-			msg:"imagen actualizada",
-			data: picture});
+			msg: 'imagen actualizada',
+			data: picture,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -216,7 +219,7 @@ const deletePicture = (req, res, next) => {
 		);
 
 		if (!picture) {
-			return res.status(404).json({ error:true , msg: 'Picture not found' });
+			return res.status(404).json({ error: true, msg: 'Picture not found' });
 		}
 
 		const index = pictures.indexOf(picture);
@@ -225,7 +228,9 @@ const deletePicture = (req, res, next) => {
 		// Se borra la picture del archivo
 		guardarPictures(pictures, next);
 
-		res.status(200).json({ error: false, msg: 'Picture deleted', data: picture });
+		res
+			.status(200)
+			.json({ error: false, msg: 'Picture deleted', data: picture });
 	} catch (error) {
 		next(error);
 	}
@@ -237,5 +242,4 @@ module.exports = {
 	createPicture,
 	updatePicture,
 	deletePicture,
-
 };
