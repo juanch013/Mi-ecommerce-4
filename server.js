@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const route = express.Router();
-
+const { sequelize } = require('./api/database/models')
 const usersRoutes = require('./api/routes/usersRoutes');
 const productsRoutes = require('./api/routes/productsRoutes');
 const picturesRoutes = require('./api/routes/picturesRoutes');
@@ -38,5 +38,6 @@ app.use(clientErrorHandler);
 
 
 app.listen(PORT, () => {
+  sequelize.sync({force: false}) 
 	console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

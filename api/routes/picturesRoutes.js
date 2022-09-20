@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('../database/models');
 const {
 	getPicture,
 	getPictures,
@@ -26,6 +27,18 @@ router.get(
 	validatorHandler(getProductPicturesSchema, 'query'),
 	getPictures
 );
+
+router.get('/ruta-prueba', async (req, res) => {
+	try {
+		const createPicture = await db.Picture.create({
+      picture_url: 'https://www.google.com',
+    });
+		res.send('Picture Creada');
+	} catch (err) {
+		console.log('Err', err);
+		res.send('Completa todos los datos requeridos');
+	}
+});
 
 router.get('/:id', validatorHandler(byIdSchema, 'params'), getPicture);
 
