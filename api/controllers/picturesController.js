@@ -4,6 +4,7 @@ const {
 	getImages,
 	guardarPictures,
 } = require('../../helpers/filesHelpers');
+const responses = require('../network/responses');
 
 // /pictures?product=id
 // Acción: Recupera la lista de pictures del product identificado con id. Responde con un array conteniendo las pictures.
