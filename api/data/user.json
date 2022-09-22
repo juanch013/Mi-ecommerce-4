@@ -1,89 +1,98 @@
 [
-    {
-        "id": 2,
-        "email": "nico@gmail.com",
-        "username": "nico",
-        "password": "$2b$10$Ln/3PvC3TBuTCX2J1DgVZ.Qak62LgcsXjIZ44XrM7.0mczTs6GFh.",
-        "firstname": "Nicolas",
-        "lastname": "Caceres",
-        "profilepic": "",
-        "role": "guest",
-        "cart": [
-            {
-                "id": "1",
-                "quantity": 30
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "email": "agus@gmail.com",
-        "username": "agus",
-        "password": "$2b$10$N//koLDHv8j86vfGii1sOOiRSgbZN8MUzwfwUTMjB0N/u6t.Wl6wm",
-        "firstname": "Agustina",
-        "lastname": "Razquin",
-        "profilepic": "",
-        "role": "guest",
-        "cart": []
-    },
-    {
-        "id": 4,
-        "email": "felipe@gmail.com",
-        "username": "feli",
-        "password": "$2b$10$wh3bpTmAM8ZlBn6CecnlhuF1bV7ludj21Qcg3/N/8q4ZOLVjk0gay",
-        "firstname": "Felipe",
-        "lastname": "Parada",
-        "profilepic": "",
-        "role": "god",
-        "cart": []
-    },
-    {
-        "id": 5,
-        "email": "juancabrera@gmail.com",
-        "username": "juanc",
-        "password": "$2b$10$ezSIxxeO1vCWWvL0iuNurO/A.3qlhZlth6jqpfqTqPfeQXWiGxYH.",
-        "firstname": "Juan",
-        "lastname": "Cabrera",
-        "profilepic": "",
-        "role": "admin",
-        "cart": []
-    },
-    {
-        "id": 6,
-        "email": "juangalvan@gmail.com",
-        "username": "juang",
-        "password": "$2b$10$flCVPOf/g5kb.OeR8O.x1.Dp5fI2LIWpo6/4OQsTFkXYmmF9Hj3Yi",
-        "firstname": "Juan",
-        "lastname": "Galvan",
-        "profilepic": "",
-        "role": "god",
-        "cart": []
-    },
-    {
-        "id": 7,
-        "email": "marco@gmail.com",
-        "username": "marco",
-        "password": "$2b$10$yWvH1vemXIdpg7nLowKZA.0ag3goTVArUsyVahG3dL4UPxEEbOyqC",
-        "firstname": "Marco",
-        "lastname": "Bonzini",
-        "profilepic": "",
-        "role": "admin",
-        "cart": [
-            {
-                "id": "1",
-                "quantity": 40
-            }
-        ]
-    },
-    {
-        "userId": 8,
-        "email": "margarita@gmail.com",
-        "password": "$2b$10$mgY9wENtbJqrOyOc8z8j3O.1iXv8XYIDC.Il8lb2yDhm2xRQ.xE36",
-        "username": "margaret",
-        "firstname": "Margarita",
-        "lastname": "Cardoso",
-        "profilepic": "",
-        "role": "god",
-        "cart": []
-    }
+	{
+		"id": 2,
+		"email": "nico@gmail.com",
+		"username": "nico",
+		"password": "$2b$10$Ln/3PvC3TBuTCX2J1DgVZ.Qak62LgcsXjIZ44XrM7.0mczTs6GFh.",
+		"firstname": "Nicolas",
+		"lastname": "Caceres",
+		"profilepic": "",
+		"role": "guest",
+		"cart": [{ "id": "1", "quantity": 30 }]
+	},
+	{
+		"id": 3,
+		"email": "agus@gmail.com",
+		"username": "agus",
+		"password": "$2b$10$N//koLDHv8j86vfGii1sOOiRSgbZN8MUzwfwUTMjB0N/u6t.Wl6wm",
+		"firstname": "Agustina",
+		"lastname": "Razquin",
+		"profilepic": "",
+		"role": "guest",
+		"cart": []
+	},
+	{
+		"id": 5,
+		"email": "juancabrera@gmail.com",
+		"username": "juanc",
+		"password": "$2b$10$ezSIxxeO1vCWWvL0iuNurO/A.3qlhZlth6jqpfqTqPfeQXWiGxYH.",
+		"firstname": "Juan",
+		"lastname": "Cabrera",
+		"profilepic": "",
+		"role": "admin",
+		"cart": []
+	},
+	{
+		"id": 6,
+		"email": "juangalvan@gmail.com",
+		"username": "juang",
+		"password": "$2b$10$flCVPOf/g5kb.OeR8O.x1.Dp5fI2LIWpo6/4OQsTFkXYmmF9Hj3Yi",
+		"firstname": "Juan",
+		"lastname": "Galvan",
+		"profilepic": "",
+		"role": "god",
+		"cart": []
+	},
+	{
+		"id": 7,
+		"email": "marco@gmail.com",
+		"username": "marco",
+		"password": "$2b$10$yWvH1vemXIdpg7nLowKZA.0ag3goTVArUsyVahG3dL4UPxEEbOyqC",
+		"firstname": "Marco",
+		"lastname": "Bonzini",
+		"profilepic": "",
+		"role": "admin",
+		"cart": [{ "id": "1", "quantity": 40 }]
+	},
+	{
+		"id": 9,
+		"email": "samanta@gmail.com",
+		"password": "$2b$10$VnCb3vJ69CznxgUpfboi5.olPX4QtckKvcB5oUTEPs7rapWzA.wZy",
+		"username": "martina",
+		"firstname": "Samanta",
+		"lastname": "Cruz",
+		"role": "god",
+		"cart": []
+	},
+	{
+		"id": 10,
+		"email": "samanta@gmail.com",
+		"password": "$2b$10$L346ZX.Md1ZcSFW1KOtO9eStkA8TZ25/xsk3V90iSX.XCzhusqPpm",
+		"username": "josefa",
+		"firstname": "Samanta",
+		"lastname": "Cruz",
+		"role": "god",
+		"cart": []
+	},
+	{
+		"id": 11,
+		"email": "felipe@gmail.com",
+		"password": "$2b$10$R2HGDInOSN19LmkkwhKTi.xwdA9Hl4e6bmqAKK1WSUBNKWUtb8YmG",
+		"username": "feli",
+		"firstname": "Felipe",
+		"lastname": "Parada",
+		"role": "god",
+		"cart": []
+	},
+	{
+		"id": 12,
+		"email": "margarita@gmail.com",
+		"password": "$2b$10$WJT0srfUklTu919.B0dsJuUn17.0k0UfLiQdNcJn5biTo5bw79sqq",
+		"username": "margarasdfdfet",
+		"firstname": "Margarita",
+		"lastname": "Cardoso",
+		"role": "god",
+		"profilepic": "f",
+		"cart": [3, 5]
+	}
 ]
