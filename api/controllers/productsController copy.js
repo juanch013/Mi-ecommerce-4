@@ -76,7 +76,7 @@ const productsController = {
 
         return res.status(200).json({
                     error: false,
-                    msg: "Most wanted products",
+                    msg: "Productos mostwanted",
                     data: filteredProducts
                 })
     },
@@ -90,6 +90,13 @@ const productsController = {
             return res.status(401).json({
                 error: true,
                 msg:"You don't have permission to create a product"
+            })
+        }
+
+        if(stock < 0 ){
+            return res.status(401).json({
+                error: true,
+                msg:"Stock must be a number greater than 0"
             })
         }
 
@@ -132,6 +139,13 @@ const productsController = {
             })
         }
 
+        if(id == undefined){
+            return res.status(400).json({
+                error: true,
+                msg:'Bad request'
+            })
+        }
+
         let products = fileHelpers.getProducts(next);
 
         if(!products.some((p)=>{ return p.id == id})){
@@ -152,7 +166,7 @@ const productsController = {
         fileHelpers.guardarProducts(products ,next);
 
         return res.status(200).json({
-            error: false,
+            ok:true,
             msg:"Product deleted"
         })
 
@@ -161,6 +175,15 @@ const productsController = {
     busqueda: (req, res, next)=>{
         let products = fileHelpers.getProducts(next);
         const q = req.query.q;
+        
+        console.log(q.toLowerCase());
+
+        if(q == undefined){
+            return res.status(400).json({
+                ok:false,
+                msg:'Bad request'
+            })
+        }
 
         let productsFiltrados = [] 
         
@@ -177,15 +200,8 @@ const productsController = {
             prod.gallery = fileHelpers.getPicturesFromProduct(prod.id,next);
         }
 
-        if (productsFiltrados.length == 0){
-            return res.status(404).json({
-                error: true,
-                msg: "No products found"
-            })
-        }
-
         return res.status(200).json({
-            error: false,
+            ok:true,
             msg:"Products filtered",
             data: productsFiltrados
         })
@@ -198,12 +214,27 @@ const productsController = {
         
         if(rol == "guest"){
             return res.status(401).json({
-                error: true,
+                ok: false,
                 msg:"You don't have permission to modify a product"
             })
         }
 
         const {title, description, price, gallery, category, mostwanted, stock} = req.body;
+
+        if(stock < 0){
+            return res.status(400).json({
+                ok:false,
+                msg:"Stock must be a number greater than 0"
+            })
+        }
+
+
+        if(!title && !description && !price && !gallery && !category && !mostwanted && !stock){
+            return res.status(400).json({
+                error: true,
+                msg:"Invalid request, You must modify at least one property of the product"
+            })
+        }
 
         let products = fileHelpers.getProducts(next);
 
@@ -232,7 +263,7 @@ const productsController = {
         fileHelpers.guardarProducts(products, next);
 
         return res.status(200).json({
-            error: false,
+            ok:true,
             msg:"Product modified",
             data:prodModificado
         })
@@ -251,6 +282,16 @@ const productsController = {
             error: true,
             msg: 'You are not authorized to access this resource',
           });
+        }
+    
+        if (!id) {
+          return res.status(400).json({ error: 'Id is required', message: '' });
+        }
+    
+        if (isNaN(id)) {
+          return res
+            .status(400)
+            .json({ error: 'Id must be a number', message: '' });
         }
     
         const products = fileHelpers.getProducts(res, next);
@@ -291,7 +332,7 @@ const productsController = {
 
         if(products.length == 0){
             return res.status(404).json({
-                error:true,
+                ok:false,
                 msg: "No products found"
             })
         }
@@ -301,7 +342,7 @@ const productsController = {
         }
 
         return res.status(200).json({
-            error:false,
+            ok: true,
             msg: "Products filtered by category",
             data: products
         })
