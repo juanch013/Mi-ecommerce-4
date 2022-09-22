@@ -30,23 +30,13 @@ const usersController = {
         })
         res.status(200).send({
             error: false,
-            msg:"Listado de usuarios",
+            msg: 'Users list',  
             data: usersWithoutPassword});
     }, 
 
     getUser: function(req, res, next) {
         const users = fileHelpers.getUsers(next);
         const userId = Number(req.params.id);
-
-        if(Number(userId) < 0){
-            return res.status(400).json({
-                error: true,
-                msg: "Bad request: User id must be a number"});
-        }
-
-        if(isNaN(userId)) {return res.status(400).json({
-            error: true,
-            msg: "Bad request: User id must be a number"});}
 
         //Searches for userIndex. If userIndex === -1 means user wasn't found.
         const userIndex = findUserById(users, userId);
@@ -82,7 +72,7 @@ const usersController = {
         users.push(userToAdd);
 
         fileHelpers.guardarUsers(users, next);
-        return res.status(201).json({error:false , msg: "Usuario creado correctamente", data:getUserWithoutPassword(userToAdd)});
+        return res.status(201).json({error:false , msg: "User created successfully.", data:getUserWithoutPassword(userToAdd)});
     },
 
     login: async function(req, res, next) {
@@ -101,7 +91,7 @@ const usersController = {
         if(!usuarioFind || !passwordMatch){
            return res.status(401).json({
               error:true,
-              msg:'las credenciales no son correctas'
+              msg:"Credentials are not valid"
            })
         }
 
@@ -142,7 +132,7 @@ const usersController = {
         
         users[userIndex] = {id: userId, ...userFromRequest};
         fileHelpers.guardarUsers(users, next);
-        return res.status(200).json({error: false, msg:"Usuario actualizado",data:getUserWithoutPassword(userFromRequest)});
+        return res.status(200).json({error: false, msg: "User updated successfully", data:getUserWithoutPassword(userFromRequest)});
     },
 
     deleteUser: function(req, res,next) {
@@ -162,7 +152,7 @@ const usersController = {
         users.pop();
 
         fileHelpers.guardarUsers(users, next);
-        return res.status(200).json({error: false, msg:"usuario borrado correctamente",data: getUserWithoutPassword(userToDelete)});
+        return res.status(200).json({error: false, msg:"User deleted successfully", data: getUserWithoutPassword(userToDelete)});
     }
 }
 
