@@ -14,6 +14,7 @@ const validatorHandler = require('../middlewares/validatorHandler');
 const userAuthMiddleware = require('../middlewares/userAuthMiddleware');
 
 router = express.Router();
+
 router.post(
 	'/',
 	validatorHandler(createAndUpdateUserSchema, 'body'),
@@ -28,12 +29,14 @@ router.post(
 router.use(verifyJWT);
 
 router.get('/', userAuthMiddleware.listUsers, usersController.listUsers);
+
 router.get(
 	'/:id',
 	validatorHandler(idByParamsSchema, 'params'),
 	userAuthMiddleware.getUser,
 	usersController.getUser
 );
+
 router.put(
 	'/:id',
 	validatorHandler(idByParamsSchema, 'params'),
@@ -41,6 +44,7 @@ router.put(
 	userAuthMiddleware.updateUser,
 	usersController.updateUser
 );
+
 router.delete(
 	'/:id',
 	validatorHandler(idByParamsSchema, 'params'),
