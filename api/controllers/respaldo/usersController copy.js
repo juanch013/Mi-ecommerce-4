@@ -3,6 +3,26 @@ const fileHelpers = require('../../helpers/filesHelpers');
 const {generateJWT} = require('../../helpers/generateJWT');
 
 
+// Validates only suported user information is accepted and they're the right data type
+// const validateUserFields = (userObject) => {
+//     let foundInvalidField = false;
+//     Object.keys(userObject).forEach((key) => {
+//         const validFields = ["email", "username", "password", "firstname", "lastname", "profilepic", "role", "cart"];
+//         if(!validFields.includes(key)){foundInvalidField = true;}
+//     });
+
+//     const {email, username, password, firstname, lastname, profilepic, role, cart} = userObject;
+//     return (!foundInvalidField &&
+//             typeof email === 'string' && 
+//             typeof username === 'string' && 
+//             typeof password === 'string' &&
+//             typeof firstname === 'string' && 
+//             typeof lastname === 'string' &&
+//             typeof role === 'string' &&
+//             typeof cart === 'object' &&
+//             (typeof profilepic === 'string' || typeof profilepic === 'undefined'))
+// }
+
 //Recibe array de usuarios y un id de usuario. 
 //Retorna el indice del usuario en el array de usuarios cuyo id coincide con el parametro id recibido.
 const findUserById = (users, id) => {
@@ -65,6 +85,10 @@ const usersController = {
     createUser: function(req, res, next) {
         const userFromRequest = req.body;
         const users = fileHelpers.getUsers(next);
+
+        // if(!validateUserFields(userFromRequest)) {return res.status(400).json({
+        //     error: true,
+        //     msg: "Bad request"})}
 
         // Si usuario ya existe en la base de datos no se puede crear
         const userExists = users.find((u) => u.username === userFromRequest.username);
@@ -130,12 +154,16 @@ const usersController = {
         const userFromRequest = req.body;
         const userId = Number(req.params.id);
 
+        // if(isNaN(userId)) {return res.status(400).json({error: true, msg: "Bad request: User id must be a number"})}
+
         //Searches for userIndex. If userIndex === -1 means user wasn't found.
         const userIndex = findUserById(users, userId);
         if(userIndex < 0)
         {
             return res.status(404).json({error: true, msg: "User does not exists."})
         }
+        //Validates data
+        // if(!validateUserFields(userFromRequest)) {return res.status(400).json({error: true, msg: "Bad request"});}
 
         // Se hashea la contraseña
         userFromRequest.password = bcrypt.hashSync(userFromRequest.password, 10);
@@ -148,6 +176,8 @@ const usersController = {
     deleteUser: function(req, res,next) {
         let users = fileHelpers.getUsers(next);
         const userId = Number(req.params.id);
+
+        // if(isNaN(userId)) {return res.status(400).json({error:true , msg: "Bad request: User id must be a number"});}
 
         //Searches for userIndex. If userIndex === -1 means user wasn't found.
         const userIndex = findUserById(users, userId);
