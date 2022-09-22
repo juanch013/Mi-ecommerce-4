@@ -9,10 +9,10 @@ const {
 } = require('../controllers/picturesController');
 const {
 	getProductPicturesSchema,
-	byIdSchema,
 	createSchema,
 	updateSchema,
 } = require('../schemas/picturesSchema');
+const {idByParamsSchema} = require('../schemas/genericSchema');
 
 // Middlewares
 const { verifyJWT } = require('../middlewares/verifyJWT');
@@ -31,8 +31,8 @@ router.get(
 router.get('/ruta-prueba', async (req, res) => {
 	try {
 		const createPicture = await db.Picture.create({
-      picture_url: 'https://www.google.com',
-    });
+			picture_url: 'https://www.google.com',
+		});
 		res.send('Picture Creada');
 	} catch (err) {
 		console.log('Err', err);
@@ -40,17 +40,17 @@ router.get('/ruta-prueba', async (req, res) => {
 	}
 });
 
-router.get('/:id', validatorHandler(byIdSchema, 'params'), getPicture);
+router.get('/:id', validatorHandler(idByParamsSchema, 'params'), getPicture);
 
 router.post('/', validatorHandler(createSchema, 'body'), createPicture);
 
 router.put(
 	'/:id',
-	validatorHandler(byIdSchema, 'params'),
+	validatorHandler(idByParamsSchema, 'params'),
 	validatorHandler(updateSchema, 'body'),
 	updatePicture
 );
 
-router.delete('/:id', validatorHandler(byIdSchema, 'params'), deletePicture);
+router.delete('/:id', validatorHandler(idByParamsSchema, 'params'), deletePicture);
 
 module.exports = router;

@@ -25,10 +25,6 @@ const getProductPicturesSchema = joi.object({
 	product: id.required().messages({ 'any.required': 'Product is required' }),
 });
 
-const byIdSchema = joi.object({
-	id: id.required().messages({ 'any.required': 'Id is required' }),
-});
-
 const createSchema = joi.object({
   pictureUrl: url.required().messages({ 'any.required': 'URL is required' }),
   pictureDescription: description,
@@ -41,4 +37,4 @@ const updateSchema = joi.object({
 });
 
 
-module.exports = { getProductPicturesSchema, byIdSchema, createSchema, updateSchema};
+module.exports = { getProductPicturesSchema, createSchema, updateSchema};

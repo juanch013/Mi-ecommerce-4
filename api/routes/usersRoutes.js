@@ -1,30 +1,62 @@
 const express = require('express');
 const usersController = require('../controllers/usersController');
 
+const { cartList, cartEdit } = require('../controllers/cartController');
+const { idByParamsSchema } = require('../schemas/genericSchema');
+const {
+	createAndUpdateUserSchema,
+	loginSchema,
+} = require('../schemas/usersSchema');
+
+// Middlewares
 const { verifyJWT } = require('../middlewares/verifyJWT');
+const validatorHandler = require('../middlewares/validatorHandler');
 const userAuthMiddleware = require('../middlewares/userAuthMiddleware');
 
-const { cartList, cartEdit } = require('../controllers/cartController');
-
-
-
-
 router = express.Router();
+router.post(
+	'/',
+	validatorHandler(createAndUpdateUserSchema, 'body'),
+	usersController.createUser
+);
+router.post(
+	'/login',
+	validatorHandler(loginSchema, 'body'),
+	usersController.login
+);
 
-router.get('/', verifyJWT, userAuthMiddleware.listUsers, usersController.listUsers);
+router.use(verifyJWT);
 
-router.get('/:id', verifyJWT, userAuthMiddleware.getUser, usersController.getUser);
+router.get('/', userAuthMiddleware.listUsers, usersController.listUsers);
+router.get(
+	'/:id',
+	validatorHandler(idByParamsSchema, 'params'),
+	userAuthMiddleware.getUser,
+	usersController.getUser
+);
+router.put(
+	'/:id',
+	validatorHandler(idByParamsSchema, 'params'),
+	validatorHandler(createAndUpdateUserSchema, 'body'),
+	userAuthMiddleware.updateUser,
+	usersController.updateUser
+);
+router.delete(
+	'/:id',
+	validatorHandler(idByParamsSchema, 'params'),
+	userAuthMiddleware.deleteUser,
+	usersController.deleteUser
+);
 
-router.post('/', usersController.createUser);
-
-router.post('/login', usersController.login);
-
-router.put('/:id', verifyJWT, userAuthMiddleware.updateUser, usersController.updateUser);
-
-router.delete('/:id', verifyJWT, userAuthMiddleware.deleteUser, usersController.deleteUser);
-
-router.use(verifyJWT)
-router.get('/:id/carts', cartList);
-router.put('/:id/carts', cartEdit);
+router.get(
+	'/:id/carts',
+	validatorHandler(idByParamsSchema, 'params'),
+	cartList
+);
+router.put(
+	'/:id/carts',
+	validatorHandler(idByParamsSchema, 'params'),
+	cartEdit
+);
 
 module.exports = router;

@@ -3,7 +3,7 @@ function validatorHandler(schema, property) {
     const data = req[property];
     const { error } = schema.validate(data);
     if (error) {
-      return res.status(400).json({ error: error.message, message: '' });
+      return res.status(400).json({ error: true, message: error.message });
     }
     next();
   };
